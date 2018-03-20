@@ -9,11 +9,9 @@ const express = require('express');
 const helmet = require('helmet');
 const compression = require('compression');
 
-const config = require('./config');
-
 const app = express();
 const port = process.env.PORT || 8000;
-const db = config.DATABASE;
+const db = process.env.DATABASE;
 
 
 // Establishing connection to the database
