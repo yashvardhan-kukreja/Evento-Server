@@ -9,6 +9,6 @@ these variables will be removed from here and will be involved in the environmen
 */
 
 module.exports = {
-    DATABASE: "",
+    DATABASE: "mongodb://admin:admin@ds219879.mlab.com:19879/evento",
     SECRET: "luci4"
 };

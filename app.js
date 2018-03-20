@@ -19,23 +19,40 @@ const db = config.DATABASE;
 // Establishing connection to the database
 mongoose.connect(db, function(err){
     if (err) {
-        console.log("Error connecting the database");
+        console.log("Error connecting the database"+err);
     } else {
         console.log("Database connected successfully...");
+
+        // Attaching logger to the app
+        app.use(logger('dev'));
+
+        // Attaching body parser to the app to read request bodies
+        app.use(bodyParser.json());
+        app.use(bodyParser.urlencoded({extended: false}));
+
+        // Attaching "helmet" to the app to secure various HTTP headers and "compression" to compress the requests passing
+        // through middle wares
+        app.use(helmet());
+        app.use(compression())
+
+        app.use(function(req, res, next) {
+            var err = new Error('Not Found');
+            err.status = 404;
+            next(err);
+        });
+
+        // error handler
+        app.use(function(err, req, res, next) {
+            // set locals, only providing error in development
+            res.locals.message = err.message;
+            res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+            // render the error page
+            res.status(err.status || 500);
+            res.render('error');
+        });
     }
 });
-
-// Attaching logger to the app
-app.use(logger('dev'));
-
-// Attaching body parser to the app to read request bodies
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-
-// Attaching "helmet" to the app to secure various HTTP headers
-// Attaching "compression" to compress the requests passing through middle wares
-app.use(helmet());
-app.use(compression());
 
 
 // Starting the server
