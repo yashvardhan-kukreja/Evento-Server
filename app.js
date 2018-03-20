@@ -26,12 +26,12 @@ mongoose.connect(db, function(err){
 
         // Attaching body parser to the app to read request bodies
         app.use(bodyParser.json());
-        app.use(bodyParser.urlencoded({extended: false}));
+        app.use(bodyParser.urlencoded({extended: true}));
 
         // Attaching "helmet" to the app to secure various HTTP headers and "compression" to compress the requests passing
         // through middle wares
         app.use(helmet());
-        app.use(compression())
+        app.use(compression());
 
         app.use(function(req, res, next) {
             var err = new Error('Not Found');
