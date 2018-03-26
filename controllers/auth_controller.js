@@ -4,9 +4,9 @@
 const Promise = require('bluebird');
 const User = require('../database/users/userSchema');
 
-module.exports.get_register = (name, password) => {
+module.exports.get_register = (email, password) => {
     return new Promise((resolve) => {
-             var user = new User({uname : name, passwd: password});
+             var user = new User({email : email, password: password});
              user.save((err) => {
                  if(err) return res.status(200).json({
                     status: 400,
