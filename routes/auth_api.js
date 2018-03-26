@@ -3,17 +3,24 @@
  */
 const router = require('express').Router();
 const c_auth = require('../controllers/auth_controller');
+const User = require('../database/')
 
+router.post('/registerUser', (req, res) => {
+    var name = req.body.name;
+    var email = req.body.email;
+    var password = req.body.password;
+    var username = req.body.username;
+    var contact = req.body.contact;
 
-router.post('/register', (req, res) => {
-    var uname       = req.body.uname;
-    var passwd      = req.body.passwd;
-
-        if (uname == null || uname == '' || passwd == '' || passwd == null) {
-             return res.json({success: false, message: 'Ensure username and password were provided'});}
-        else {
-                c_auth.get_register(uname, password).then(data => { console.log(data);})
-            }
+    c_auth.register(name, username, email, password, contact).then((data) => {
+        res.json(data);
+    }).catch((err) => {
+        if (err.success === false)
+            res.json(err);
+        else
+            console.log(err);
     });
+
+}
 
 module.exports = router;
