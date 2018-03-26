@@ -5,7 +5,7 @@ const router = require('express').Router();
 const c_auth = require('../controllers/auth_controller');
 const User = require('../database/')
 
-router.post('/registerUser', (req, res) => {
+router.post('/user/register', (req, res) => {
     var name = req.body.name;
     var email = req.body.email;
     var password = req.body.password;
