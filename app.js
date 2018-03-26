@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const helmet = require('helmet');
 const compression = require('compression');
+const authenticationRoutes = require('./routes/auth_api');
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -32,6 +33,9 @@ mongoose.connect(db, function(err){
         // through middle wares
         app.use(helmet());
         app.use(compression());
+
+        // Attaching the routers to specific base routes
+        app.use('/authenticate', authenticationRoutes);
 
         app.use(function(req, res, next) {
             var err = new Error('Not Found');
