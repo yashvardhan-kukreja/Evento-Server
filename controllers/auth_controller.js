@@ -3,21 +3,19 @@
  */
 const Promise = require('bluebird');
 const User = require('../database/users/userSchema');
+const Organisation = require('../database/organisations/organisationSchema');
 const userTransactions = require('../database/users/userTransactions');
+const organisationTransactions = require('../database/organisations/organisationTransactions');
 
 const secret = process.env.SECRET;
 
 // Function returning a promise for executing the registration of a user
 module.exports.registerUser = (name, username, email, password, contact) => {
     return new Promise((resolve, reject) => {
-        var user = new User({name: name, username: username, email: email, password: password, contact: contact});
-
-        // Checking if the user has completely filled all the fields
         if (name.trim() === "" || name.trim() === null || username.trim() === "" || username.trim() === null || email.trim() === "" || email.trim() === null || password.trim() === "" || password.trim() === null || contact.trim() === "" || contact.trim() === null)
             reject({success: false, message: "Please enter all the fields"});
         else {
-
-            // Saving the user
+            var user = new User({name: name, username: username, email: email, password: password, contact: contact});
             user.save((err) => {
                 if(err) {
                     console.log(err);
@@ -32,7 +30,7 @@ module.exports.registerUser = (name, username, email, password, contact) => {
     });
 };
 
-// Function returning a proomise for executing the login of a user
+// Function returning a promise for executing the login of a user
 module.exports.loginUser = (email, password) => {
     return new Promise((resolve, reject) => {
         var user = userTransactions.findUserByUsernameOrEmail(email);
@@ -46,6 +44,34 @@ module.exports.loginUser = (email, password) => {
                 var token = userTransactions.generateToken(user, secret);
                 resolve({success: true, message:"User authenticated successfully", token: token});
             }
+        }
+    });
+};
+
+// Function returning a promise for executing the registration of an organisation
+module.exports.registerOrganisation = (name, college, email, contact, password) => {
+    return new Promise((resolve, reject) => {
+        if (name.trim() === "" || name.trim() === null || college.trim() === "" || college.trim() === null || email.trim() === "" || email.trim() === null || contact.trim() === "" || contact.trim() === null || password.trim() === "" || password.trim() === null) {
+            reject({success: false, message: "Please enter all the fields completely"});
+        } else {
+            var organisation = new Organisation({
+                orgName: name,
+                college: college,
+                concernedEmail: email,
+                concernedContact: contact,
+                password: password
+            });
+            organisation.save((err) => {
+                if (err) {
+                    console.log(err);
+                    if (err.code === 11000)
+                        reject({success: false, message: "An organisation already exists with the given email"});
+                    else
+                        reject({success: false, message: "An error occurred"});
+                } else {
+                    resolve({success: true, message: "Organisation registered successfully"});
+                }
+            });
         }
     });
 };
