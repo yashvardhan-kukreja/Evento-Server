@@ -35,10 +35,11 @@ const userSchema = new Schema({
 
 // Hashing the password of the user before saving it
 userSchema.pre('save', (next) => {
-    bcrypt.hash(this.password, null, null, (err, hash) => {
+    var user = this;
+    bcrypt.hash(user.password, null, null, (err, hash) => {
         if (err)
             return next(err);
-        this.password = hash;
+        user.password = hash;
         next();
     });
 });

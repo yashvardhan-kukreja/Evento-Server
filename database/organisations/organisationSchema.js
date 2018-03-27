@@ -43,10 +43,11 @@ var organisationSchema = new mongoose.Schema({
 
 // Hashing the password of the organisation before saving it
 organisationSchema.pre('save', (next) => {
-    bcrypt.hash(this.password, null, null, (err, hash) => {
+    var organisation = this;
+    bcrypt.hash(organisation.password, null, null, (err, hash) => {
         if (err)
             return next(err);
-        this.password = hash;
+        organisation.password = hash;
         next();
     });
 });
