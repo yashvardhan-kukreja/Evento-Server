@@ -3,7 +3,7 @@
  */
 const router = require('express').Router();
 const c_auth = require('../controllers/auth_controller');
-const User = require('../database/')
+const User = require('../database/users/userSchema')
 
 router.post('/user/register', (req, res) => {
     var name = req.body.name;
@@ -17,7 +17,7 @@ router.post('/user/register', (req, res) => {
     }).catch((err) => {
         res.json(err);
     });
-}
+});
 
 router.post('/user/login', (req, res) => {
     var email = req.body.email;
