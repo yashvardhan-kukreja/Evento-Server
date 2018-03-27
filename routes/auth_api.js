@@ -44,4 +44,15 @@ router.post('/organisation/register', (req, res) => {
     });
 });
 
+router.post('/organisation/login', (req, res) => {
+    var email = req.body.email;
+    var password = req.body.password;
+
+    c_auth.loginOrganisation(email, password).then((data) => {
+        res.json(data);
+    }).catch((err) => {
+        res.json(err);
+    });
+});
+
 module.exports = router;
