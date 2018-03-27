@@ -12,7 +12,7 @@ router.post('/user/register', (req, res) => {
     var username = req.body.username;
     var contact = req.body.contact;
 
-    c_auth.register(name, username, email, password, contact).then((data) => {
+    c_auth.registerUser(name, username, email, password, contact).then((data) => {
         res.json(data);
     }).catch((err) => {
         if (err.success === false)
@@ -20,7 +20,17 @@ router.post('/user/register', (req, res) => {
         else
             console.log(err);
     });
-
 }
+
+router.post('/user/login', (req, res) => {
+    var email = req.body.email;
+    var password = req.body.password;
+
+    c_auth.loginUser(email, password).then((data) => {
+        res.json(data)
+    }).catch((err) => {
+        res.json(err);
+    });
+});
 
 module.exports = router;
