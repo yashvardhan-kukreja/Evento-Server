@@ -75,3 +75,22 @@ module.exports.registerOrganisation = (name, college, email, contact, password) 
         }
     });
 };
+
+// Function returning a promise for executing the login of an organisation
+module.exports.loginOrganisation = (email, password) => {
+    return new Promise((resolve, reject) => {
+        var organisation = organisationTransactions.findOrganisationByConcernedEmail(email);
+        if (!organisation) {
+            reject({success: false, message: "No organisation found with such username or email"});
+        } else {
+            var validPassword = organisationTransactions.comparePassword(organisation, password);
+            if (!validPassword)
+                reject({success: false, message: "Wrong password enetered"});
+            else {
+                var token = organisationTransactions.generateToken(organisation, secret);
+                resolve({success: true, message:"Organisation authenticated successfully", token: token});
+            }
+        }
+    });
+};
+
