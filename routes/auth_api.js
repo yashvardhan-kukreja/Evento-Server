@@ -15,10 +15,7 @@ router.post('/user/register', (req, res) => {
     c_auth.registerUser(name, username, email, password, contact).then((data) => {
         res.json(data);
     }).catch((err) => {
-        if (err.success === false)
-            res.json(err);
-        else
-            console.log(err);
+        res.json(err);
     });
 }
 
@@ -28,6 +25,20 @@ router.post('/user/login', (req, res) => {
 
     c_auth.loginUser(email, password).then((data) => {
         res.json(data)
+    }).catch((err) => {
+        res.json(err);
+    });
+});
+
+router.post('/organisation/register', (req, res) => {
+    var name = req.body.name;
+    var college = req.body.college;
+    var email = req.body.email;
+    var contact = req.body.contact;
+    var password =req.body.password;
+
+    c_auth.registerOrganisation(name, college, email, contact, password).then((data) => {
+        res.json(data);
     }).catch((err) => {
         res.json(err);
     });
