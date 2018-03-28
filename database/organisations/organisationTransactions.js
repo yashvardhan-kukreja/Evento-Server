@@ -6,16 +6,21 @@ const jwt = require('jsonwebtoken');
 const Organisation = require('./organisationSchema');
 
 // Function for finding an organisation on the basis of concerned email
-module.exports.findOrganisationByConcernedEmail = (email) => {
-    Organisation.findOne({concernedEmail: email}).exec((err, outputOrganisaction) => {
+module.exports.findOrganisationByConcernedEmail = (email, next) => {
+    Organisation.findOne({concernedEmail: email}).exec(next);
+};
+
+// Function for adding an organisation to the database
+module.exports.addOrganisation = (organisation, next) => {
+    bcrypt.genSalt(10, (err, salt) => {
         if (err)
-            return false;
-        else {
-            if (!outputOrganisaction)
-                return false;
-            else
-                return outputOrganisaction;
-        }
+            return next(err);
+        bcrypt.hash(organisation.password, salt, null, (err, hash) => {
+            if (err)
+                return next(err);
+            organisation.password = hash;
+            organisation.save(next);
+        });
     });
 };
 
