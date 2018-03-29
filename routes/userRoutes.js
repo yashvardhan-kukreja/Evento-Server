@@ -3,13 +3,22 @@
  */
 
 const router = require('express').Router();
-const User = require('../database/users/userSchema');
+const userController = require('../controllers/userController');
 const userTransations = require('../database/users/userTransactions');
 
 const secret = process.env.SECRET;
 
 router.use((req, res, next) => {
     userTransations.verifyUserToken(secret, req, res, next);
+});
+
+router.get('/userDetails', (req, res) => {
+    const id = req.decoded._id;
+    userController.getUserDetails(id).then((data) => {
+        res.json(data);
+    }).catch((err) => {
+        res.json(err);
+    });
 });
 
 module.exports = router;
