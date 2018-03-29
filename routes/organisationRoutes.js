@@ -3,13 +3,22 @@
  */
 
 const router = require('express').Router();
-const Organisation = require('../database/organisations/organisationSchema');
+const organisationController = require('../controllers/organisationController');
 const organisationTransations = require('../database/organisations/organisationTransactions');
 
 const secret = process.env.SECRET;
 
 router.use((req, res, next) => {
     organisationTransations.verifyOrganisationToken(secret, req, res, next);
+});
+
+router.get('/fetchDetails', (req, res) => {
+    const id = req.decoded._id;
+    organisationController.getOrganisationDetails(id).then((data) => {
+        res.json(data);
+    }).catch((err) => {
+        res.json(err);
+    });
 });
 
 module.exports = router;
