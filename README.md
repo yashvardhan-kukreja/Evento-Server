@@ -4,7 +4,7 @@ API documentation
 
 ## Routes Structure
 
-=> Base URL
+=> Base URL:
    https://ieee-evento.herokuapp.com
    
 => Authentication Routes:
@@ -25,5 +25,6 @@ Organisation Login
 - POST /authenticate/organisation/login : Parameters (email, password)
 - Response : {success: true, message: "Organisation authenticated successfully", token: token}
 
-=> Variables
-token: JSON Web Token containing the user object or the organisation object in encoded form
+=> Variables:
+
+- token: JSON Web Token containing the user object or the organisation object in encoded form
