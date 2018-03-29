@@ -1,7 +1,6 @@
 /**
  * Created by Yash 1300 on 21-03-2018.
  */
-const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
 const User = require('./userSchema');
@@ -13,7 +12,7 @@ module.exports.findUserByUsernameOrEmail = (input, next) => {
 
 //Function returning a user object corresponding to the provided ObjectID
 module.exports.findUserById = (id, next) => {
-    User.findOne({_id: id}).exec(next);
+    User.findOne({_id: id}, {_id: 0, password: 0}).exec(next);
 };
 
 // Function for adding a user to the database
