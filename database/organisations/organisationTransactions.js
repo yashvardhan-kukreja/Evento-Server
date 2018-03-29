@@ -12,7 +12,7 @@ module.exports.findOrganisationByConcernedEmail = (email, next) => {
 
 //Function for finding an organisation on the basis of the ObjectID
 module.exports.findOrganisationById = (id, next) => {
-    Organisation.findOne({_id: id}).exec(next);
+    Organisation.findOne({_id: id}, {_id: 0, password: 0}).exec(next);
 };
 
 // Function for adding an organisation to the database
