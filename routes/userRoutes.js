@@ -12,7 +12,7 @@ router.use((req, res, next) => {
     userTransations.verifyUserToken(secret, req, res, next);
 });
 
-router.get('/userDetails', (req, res) => {
+router.get('/fetchDetails', (req, res) => {
     const id = req.decoded._id;
     userController.getUserDetails(id).then((data) => {
         res.json(data);
