@@ -42,13 +42,14 @@ module.exports.loginUser = (email, password) => {
                 if (!user) {
                     reject({success: false, message: "No user found with such username or email"});
                 } else {
-                    var validPassword = userTransactions.comparePassword(user, password);
-                    if (!validPassword)
-                        reject({success: false, message: "Wrong password enetered"});
-                    else {
-                        var token = userTransactions.generateToken(user, secret);
-                        resolve({success: true, message:"User authenticated successfully", token: token});
-                    }
+                    userTransactions.comparePassword(user, password, (err, validPassword) => {
+                        if (!validPassword)
+                            reject({success: false, message: "Wrong password enetered"});
+                        else {
+                            var token = userTransactions.generateToken(user, secret);
+                            resolve({success: true, message:"User authenticated successfully", token: token});
+                        }
+                    });
                 }
             }
         });
@@ -94,13 +95,14 @@ module.exports.loginOrganisation = (email, password) => {
                 if (!organisation) {
                     reject({success: false, message: "No organisation found with such username or email"});
                 } else {
-                    var validPassword = organisationTransactions.comparePassword(organisation, password);
-                    if (!validPassword)
-                        reject({success: false, message: "Wrong password enetered"});
-                    else {
-                        var token = organisationTransactions.generateToken(organisation, secret);
-                        resolve({success: true, message:"Organisation authenticated successfully", token: token});
-                    }
+                    organisationTransactions.comparePassword(organisation, password, (err, validPassword) => {
+                        if (!validPassword)
+                            reject({success: false, message: "Wrong password enetered"});
+                        else {
+                            var token = organisationTransactions.generateToken(organisation, secret);
+                            resolve({success: true, message:"Organisation authenticated successfully", token: token});
+                        }
+                    });
                 }
             }
         });
