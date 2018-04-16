@@ -12,7 +12,7 @@ module.exports.getOrganisationDetails = (id) => {
                 console.log(err);
                 reject({success: false, message: "An error occurred"});
             } else {
-                if (!outputUser)
+                if (!outputOrganisation)
                     reject({success: false, message: "Problem fetching organisation details"});
                 else {
                     resolve({success: true, message: "Organisation details fetched successfully", organisation: outputOrganisation});
