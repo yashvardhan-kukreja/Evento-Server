@@ -31,8 +31,8 @@ module.exports.addUser = (user, next) => {
 };
 
 // Function for comparing password for a user object
-module.exports.comparePassword = (user, password) => {
-    return bcrypt.compareSync(password, user.password)
+module.exports.comparePassword = (user, password, next) => {
+    bcrypt.compare(password, user.password, (err, correctPassword) => err ? next(err, null) : next(null, correctPassword));
 };
 
 // Function for generating a token for a user object

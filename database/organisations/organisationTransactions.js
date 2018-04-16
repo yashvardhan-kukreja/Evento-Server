@@ -30,8 +30,8 @@ module.exports.addOrganisation = (organisation, next) => {
 };
 
 // Function for comparing a password to that of an organisation
-module.exports.comparePassword = (organisation, password) => {
-    return bcrypt.compareSync(password, organisation.password);
+module.exports.comparePassword = (organisation, password, next) => {
+    bcrypt.compare(password, organisation.password, (err, correctPassword) => err ? next(err, null) : next(null, correctPassword));
 };
 
 // Function for generating a token for an organisation object
