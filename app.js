@@ -16,7 +16,6 @@ const app = express();
 const port = process.env.PORT || 8000;
 const db = process.env.DATABASE;
 
-
 // Establishing connection to the database
 mongoose.connect(db, function(err){
     if (err) {
