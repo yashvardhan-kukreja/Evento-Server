@@ -17,7 +17,7 @@ router.use((req, res, next) => {
     OrganisationTransations.verifyOrganisationToken(secret, req, res, next);
 });
 
-router.get('/fetch/organisation-info', (req, res) => {
+router.get('/fetch/info', (req, res) => {
     let id = req.decoded._id;
     console.log(req.decoded._id);
     OrganisationController.getOrganisationDetails(id).then(data => res.json(data)).catch(err => res.json(err));
