@@ -43,7 +43,7 @@ module.exports.generateToken = (organisation, secret) => {
 module.exports.verifyOrganisationToken = (secret, req, res, next) => {
     const token = req.body.token || req.headers['x-access-token'];
     if (token) {
-        jwt.verify(token, secret).exec((err, decoded) => {
+        jwt.verify(token, secret, (err, decoded) => {
             if (err) {
                 console.log(err);
                 return res.json({success: false, message: "An error occurred"});
