@@ -35,12 +35,33 @@ Fetching the events in which the user participated
 - GET /user/fetch/participated-events: Headers ("x-access-token": token)
 - Response : {success: true, message: "Participated events fetched", events: outputEvents}
 
+Participate(Register) in an event
+- POST /user/participate: Headers ("x-access-token": token) & Parameters (event_id)
+- Response : {success: true, message: "Registered to the event successfully"}
+
+Login to an event (Verifying whether a part of the given event or not)
+- POST /user/verification: Headers ("x-access-token": token) & Parameters (event_id)
+- Response : {success: true, message: "User registered to the event"}
+
 **=> Organisation Routes:**
 
 Fetching organisation details
-- GET /user/fetchDetails: Headers ("x-access-token": token)
+- GET /organisation/fetch/info: Headers ("x-access-token": token)
 - Response : {success: true, message: "Organisation details fetched successfully", organisation: organisation}
 
+Host an event
+- POST /organisation/host-event: Headers ("x-access-token": token) & Parameters (event_name, event_date, event_location)
+- Response : {success: true, message: "Event hosted successfully"}
+
+Delete an event
+- POST /organisation/delete-event: Headers ("x-access-token": token)
+- Response : {success: true, message: "Event removed successfully"}
+
+**=> Event Routes:**
+
+Fetching event details
+- POST /event/fetch/info: Parameters (event_id)
+- Response : {success: true, message: "Event details fetched successfully", event: outputEvent}
 
 **=> Variables:**
 
