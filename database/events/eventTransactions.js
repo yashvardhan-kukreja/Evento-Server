@@ -41,3 +41,7 @@ module.exports.deleteEventByEventId = (event_id, next) => {
 module.exports.addUserToAnEvent = (event_id, user_id, next) => {
     Event.findOneAndUpdate({_id: event_id}, {$push: {participants: user_id}}).exec(next);
 };
+
+module.exports.fetchParticipatedEvents = (user_id, next) => {
+    Event.find({participants: user_id}, {participants: 0}).populate({path: 'hostingOrganisation', model: 'Organisation'}).exec(next);
+};
