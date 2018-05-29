@@ -3,7 +3,6 @@
  */
 
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt-nodejs');
 
 var organisationSchema = new mongoose.Schema({
     orgName: {
@@ -32,13 +31,7 @@ var organisationSchema = new mongoose.Schema({
     authorized: {
         type: Boolean,
         default: true  // Set default: false in the future
-    },
-    eventsOrganized: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Event'
-        }
-    ]
+    }
 });
 
 module.exports = mongoose.model('Organisation', organisationSchema, "organisations");
