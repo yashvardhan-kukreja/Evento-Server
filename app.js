@@ -25,7 +25,7 @@ const port = process.env.PORT || 8000;
 const db = process.env.DATABASE || config.DATABASE;
 
 // Establishing connection to the database
-mongoose.connect(db, function(err){
+mongoose.connect(db, (err) => {
     if (err) {
         console.log("Error connecting the database");
     } else {
@@ -49,14 +49,14 @@ mongoose.connect(db, function(err){
         app.use('/user', userRouter);
         app.use('/event', eventRouter);
 
-        app.use(function(req, res, next) {
+        app.use((req, res, next) => {
             var err = new Error('Not Found');
             err.status = 404;
             next(err);
         });
 
         // error handler
-        app.use(function(err, req, res, next) {
+        app.use((err, req, res, next) => {
             // set locals, only providing error in development
             res.locals.message = err.message;
             res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -67,8 +67,6 @@ mongoose.connect(db, function(err){
         });
 
         // Starting the server
-        app.listen(port, function(){
-            console.log("App running successfully on port number: " + port + "...");
-        });
+        app.listen(port, () => console.log("App running successfully on port number: " + port + "..."));
     }
 });

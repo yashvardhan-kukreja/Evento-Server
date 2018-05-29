@@ -6,7 +6,7 @@ const router = require('express').Router();
 const EventController = require('../controllers/eventController');
 
 router.post('/fetch/info', (req, res) => {
-    const event_id = req.body.event_id;
+    let event_id = req.body.event_id;
     EventController.fetchEventDetails(event_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
