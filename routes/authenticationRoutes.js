@@ -11,13 +11,13 @@ router.post('/user/register', (req, res) => {
     let password = req.body.password;
     let username = req.body.username;
     let contact = req.body.contact;
-    AuthController.registerUser(name, username, email, password, contact).then(data => res.json(data)}).catch(err => res.json(err)});
+    AuthController.registerUser(name, username, email, password, contact).then(data => res.json(data)).catch(err => res.json(err));
 });
 
 router.post('/user/login', (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
-    AuthController.loginUser(email, password).then(data => res.json(data)}).catch(err => res.json(err)});
+    AuthController.loginUser(email, password).then(data => res.json(data)).catch(err => res.json(err));
 });
 
 router.post('/organisation/register', (req, res) => {
@@ -26,13 +26,13 @@ router.post('/organisation/register', (req, res) => {
     let email = req.body.email;
     let contact = req.body.contact;
     let password =req.body.password;
-    AuthController.registerOrganisation(name, college, email, contact, password).then(data => res.json(data)}).catch((err) => res.json(err)});
+    AuthController.registerOrganisation(name, college, email, contact, password).then(data => res.json(data)).catch((err) => res.json(err));
 });
 
 router.post('/organisation/login', (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
-    AuthController.loginOrganisation(email, password).then(data => res.json(data)}).catch(err => res.json(err)});
+    AuthController.loginOrganisation(email, password).then(data => res.json(data)).catch(err => res.json(err));
 });
 
 module.exports = router;
