@@ -14,7 +14,7 @@ User SignUp
 - Response : {success: true, message: "User registered successfully"}
 
 User Login
-- POST /authenticate/user/login : Paramters (email, password) or (username, password)
+- POST /authenticate/user/login : Parameters (email, password) or (username, password)
 - Response : {success: true, message: "User authenticated successfully", token: token}
 
 Organisation SignUp
@@ -28,12 +28,16 @@ Organisation Login
 **=> User Routes:**
 
 Fetching user details
-- GET /user/fetchDetails: Headers ("x-access-token": token)
+- GET /user/fetch/personal-info: Headers ("x-access-token": token)
 - Response : {success: true, message: "User details fetched successfully", user: user}
+
+Fetching the events in which the user participated
+- GET /user/fetch/participated-events: Headers ("x-access-token": token)
+- Response : {success: true, message: "Participated events fetched", events: outputEvents}
 
 **=> Organisation Routes:**
 
-Fetching user details
+Fetching organisation details
 - GET /user/fetchDetails: Headers ("x-access-token": token)
 - Response : {success: true, message: "Organisation details fetched successfully", organisation: organisation}
 
