@@ -33,7 +33,7 @@ module.exports.fetchParticipatedEvents = (id) => {
                 if (!outputUser)
                     reject({success: false, message: "No such user exists"});
                 else {
-                    UserTransactions.fetchParticipatedEvents(id, (err, outputEvents) => {
+                    EventTransactions.fetchParticipatedEvents(id, (err, outputEvents) => {
                         if (err) {
                             console.log(err);
                             reject({success: false, message: "An error occurred"});
