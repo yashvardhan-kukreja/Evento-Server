@@ -3,22 +3,38 @@
  */
 
 const router = require('express').Router();
-const organisationController = require('../controllers/organisationController');
-const organisationTransations = require('../database/organisations/organisationTransactions');
+const OrganisationController = require('../controllers/organisationController');
+const OrganisationTransations = require('../database/organisations/organisationTransactions');
+try {
+    var config = require('../config');
+} catch (e) {
+    console.log("Using environment variables instead of config variables");
+}
 
-const secret = process.env.SECRET;
+const secret = process.env.SECRET || config.SECRET;
 
 router.use((req, res, next) => {
-    organisationTransations.verifyOrganisationToken(secret, req, res, next);
+    OrganisationTransations.verifyOrganisationToken(secret, req, res, next);
 });
 
-router.get('/fetchDetails', (req, res) => {
-    const id = req.decoded._id;
-    organisationController.getOrganisationDetails(id).then((data) => {
-        res.json(data);
-    }).catch((err) => {
-        res.json(err);
-    });
+router.get('/fetch/organisation-info', (req, res) => {
+    let id = req.decoded._id;
+    console.log(req.decoded._id);
+    OrganisationController.getOrganisationDetails(id).then(data => res.json(data)).catch(err => res.json(err));
+});
+
+router.post('/host-event', (req, res) => {
+    let id = req.decoded._id;
+    let name = req.body.event_name;
+    let date = req.body.event_date;
+    let location = req.body.event_location;
+    OrganisationController.hostAnEvent(name, date, location, id).then(data => res.json(data)).catch(err => res.json(err));
+});
+
+router.post('/delete-event', (req, res) => {
+    let organisation_id = req.decoded._id;
+    let event_id = req.body.event_id;
+    OrganisationController.deleteAnEvent(event_id, organisation_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
 module.exports = router;
