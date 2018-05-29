@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
 
 const User = require('./userSchema');
-const Event = require('../events/eventSchema');
 
 // Function returning a user object corresponding to the provided username or email
 module.exports.findUserByUsernameOrEmail = (input, next) => {
@@ -67,9 +66,4 @@ module.exports.verifyUserToken = (secret, req, res, next) => {
     } else {
         return res.json({success: false, message: "No token provided"});
     }
-};
-
-// Function for fetching the participated events
-module.exports.fetchParticipatedEvents = (user_id, next) => {
-    Event.find({participants: user_id}, {participants: 0}).populate({path: 'hostingOrganisation', model: 'Organisation'}).exec(next);
 };
