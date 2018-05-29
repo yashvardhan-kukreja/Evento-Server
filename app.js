@@ -8,18 +8,26 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const helmet = require('helmet');
 const compression = require('compression');
-const authenticationRoutes = require('./routes/auth_api');
-const organisationRoutes = require('./routes/organisationRoutes');
-const userRoutes = require('./routes/userRoutes');
+
+const authenticationRouter = require('./routes/authenticationRoutes');
+const organisationRouter = require('./routes/organisationRoutes');
+const userRouter = require('./routes/userRoutes');
+const eventRouter = require('./routes/eventRoutes');
+
+try {
+    var config = require('./config');
+} catch (e) {
+    console.log("Using environment variables instead of config variables");
+}
 
 const app = express();
 const port = process.env.PORT || 8000;
-const db = process.env.DATABASE;
+const db = process.env.DATABASE || config.DATABASE;
 
 // Establishing connection to the database
 mongoose.connect(db, function(err){
     if (err) {
-        console.log("Error connecting the database"+err);
+        console.log("Error connecting the database");
     } else {
         console.log("Database connected successfully...");
 
@@ -36,9 +44,10 @@ mongoose.connect(db, function(err){
         app.use(compression());
 
         // Attaching the routers to specific base routes
-        app.use('/authenticate', authenticationRoutes);
-        app.use('/organisation', organisationRoutes);
-        app.use('/user', userRoutes);
+        app.use('/authenticate', authenticationRouter);
+        app.use('/organisation', organisationRouter);
+        app.use('/user', userRouter);
+        app.use('/event', eventRouter);
 
         app.use(function(req, res, next) {
             var err = new Error('Not Found');
@@ -54,13 +63,12 @@ mongoose.connect(db, function(err){
 
             // render the error page
             res.status(err.status || 500);
-            res.render('error');
+            res.send('error');
+        });
+
+        // Starting the server
+        app.listen(port, function(){
+            console.log("App running successfully on port number: " + port + "...");
         });
     }
-});
-
-
-// Starting the server
-app.listen(port, function(){
-    console.log("App running successfully on port number: " + port + "...");
 });
