@@ -31,4 +31,7 @@ var eventSchema = new mongoose.Schema({
     ]
 });
 
+// Making sure that there exists no two or more events having same eventName and hostingOrganisation
+eventSchema.index({eventName: 1, hostingOrganisation: 1}, {unique: true});
+
 module.exports = mongoose.model('Event', eventSchema, "events");
