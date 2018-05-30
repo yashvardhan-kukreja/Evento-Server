@@ -69,7 +69,7 @@ Fetching organisation details
 
 Host an event
 ```
-- POST /organisation/host-event: Headers ("x-access-token": token) & Parameters (event_name, event_date, event_location)
+- POST /organisation/host-event: Headers ("x-access-token": token) & Parameters (event_name, start_date, end_date, event_location, organisation_id, reg_fees <Array of reg fees>, about, point_of_contacts <Array of point of contacts>)
 - Response : {success: true, message: "Event hosted successfully"}
 ```
 
@@ -113,6 +113,12 @@ Modify the 'about' of an event
 ```
 - POST /organisation/event/modify-about: Headers ("x-access-token": token) & Parameters (event_id, about)
 - Response : {success: true, message: "Modified 'about' of the event successfully"}
+```
+
+Add point of contacts to the event
+```
+- POST /organisation/event/add-pocs: Headers ("x-access-token": token) & Parameters (event_id, name <Array of names>, contacts <Array of contacts>, emails <Array of emails>)
+- Response : {success: true, message: "Point of contacts added successfully"}
 ```
 
 **=> Event Routes:**
