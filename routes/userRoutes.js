@@ -18,22 +18,26 @@ router.use((req, res, next) => {
     UserTransations.verifyUserToken(secret, req, res, next);
 });
 
+// Route for fetching user's info
 router.get('/fetch/personal-info', (req, res) => {
     let user_id = req.decoded._id;
-    UserController.getUserDetails(user_id).then(data => res.json(data)).catch(err => res.json(err));
+    UserController.fetchUserDetails(user_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
+// Route for fetching the list of events in which the given user participated
 router.get('/fetch/participated-events', (req, res) => {
     let user_id = req.decoded._id;
     UserController.fetchParticipatedEvents(user_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
+// Route for participating a user in an event
 router.post('/participate', (req, res) => {
     let user_id = req.decoded._id;
     let event_id = req.body.event_id;
     UserController.registerToAnEvent(user_id, event_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
+// Route for verifying whether the given user is a participant of the event or not
 router.post('/verification', (req, res) => {
     let user_id = req.decoded._id;
     let event_id = req.body.event_id;

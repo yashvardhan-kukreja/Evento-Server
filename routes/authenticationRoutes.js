@@ -5,6 +5,7 @@ const router = require('express').Router();
 const AuthController = require('../controllers/authController');
 const User = require('../database/users/userSchema');
 
+// Route for registering a user
 router.post('/user/register', (req, res) => {
     let name = req.body.name;
     let email = req.body.email;
@@ -14,12 +15,14 @@ router.post('/user/register', (req, res) => {
     AuthController.registerUser(name, username, email, password, contact).then(data => res.json(data)).catch(err => res.json(err));
 });
 
+// Route for logging in a user
 router.post('/user/login', (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
     AuthController.loginUser(email, password).then(data => res.json(data)).catch(err => res.json(err));
 });
 
+// Route for registering an organisation
 router.post('/organisation/register', (req, res) => {
     let name = req.body.name;
     let college = req.body.college;
@@ -29,6 +32,7 @@ router.post('/organisation/register', (req, res) => {
     AuthController.registerOrganisation(name, college, email, contact, password).then(data => res.json(data)).catch((err) => res.json(err));
 });
 
+// Route for logging in an organisation
 router.post('/organisation/login', (req, res) => {
     let email = req.body.email;
     let password = req.body.password;

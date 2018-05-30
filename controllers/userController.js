@@ -6,7 +6,8 @@ const Promise = require('bluebird');
 const UserTransactions = require('../database/users/userTransactions');
 const EventTransactions = require('../database/events/eventTransactions');
 
-module.exports.getUserDetails = (id) => {
+// Route for fetching a user's details
+module.exports.fetchUserDetails = (id) => {
     return new Promise((resolve, reject) => {
         UserTransactions.findUserById(id, (err, outputUser) => {
             if (err) {
@@ -23,6 +24,7 @@ module.exports.getUserDetails = (id) => {
     });
 };
 
+// Controller for fetching the list of events in which the given user has participated
 module.exports.fetchParticipatedEvents = (id) => {
     return new Promise((resolve, reject) => {
         UserTransactions.findUserById(id, (err, outputUser) => {
@@ -47,6 +49,7 @@ module.exports.fetchParticipatedEvents = (id) => {
     });
 };
 
+// Controller for registering a user in an event
 module.exports.registerToAnEvent = (user_id, event_id) => {
     return new Promise((resolve, reject) => {
         UserTransactions.findUserById(user_id, (err, outputUser) => {
