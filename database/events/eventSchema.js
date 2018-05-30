@@ -8,7 +8,12 @@ var eventSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    eventDate: {
+    eventStartDate: {
+        type: String,
+        required: true
+        // TODO: ask about setting the data type of eventDate as Date or String
+    },
+    eventEndDate: {
         type: String,
         required: true
         // TODO: ask about setting the data type of eventDate as Date or String
@@ -64,7 +69,20 @@ var eventSchema = new mongoose.Schema({
     about: {
         type: String,
         default: "No description available"
-    }
+    },
+    pointOfContacts: [
+        {
+            name: {
+                type: String
+            },
+            email: {
+                type: String
+            },
+            contact: {
+                type: String
+            }
+        }
+    ]
 });
 
 // Making sure that there exists no two or more events having same eventName and hostingOrganisation
