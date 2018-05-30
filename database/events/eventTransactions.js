@@ -12,12 +12,14 @@ module.exports.findEventByEventId = (event_id, next) => {
     Event.findOne({_id: event_id}, {participants: 0}).populate({path: 'hostingOrganisation', model: 'Organisation'}).exec(next);
 };
 
-module.exports.addAnEvent = (name, date, location, organisation_id, next) => {
+module.exports.addAnEvent = (name, date, location, organisation_id, reg_fees_amount, reg_fees_description, about, next) => {
     let newEvent = new Event({
         eventName: name,
         eventDate: date,
         eventLocation: location,
-        hostingOrganisation: organisation_id
+        hostingOrganisation: organisation_id,
+        fees: [{ amount: reg_fees_amount, description: reg_fees_description }],
+        about: about
     });
     newEvent.save(next);
 };
@@ -47,7 +49,7 @@ module.exports.fetchParticipatedEvents = (user_id, next) => {
 };
 
 module.exports.addFaqs = (event_id, faqs, next) => {
-    Event.findOneAndUpdate({_id: event_id}, {$push: {$each: faqs}}).exec(next);
+    Event.findOneAndUpdate({_id: event_id}, {$push: {faqs: {$each: faqs}}}).exec(next);
 };
 
 module.exports.addASingleFAQ = (event_id, question, answer, next) => {
@@ -60,4 +62,29 @@ module.exports.addASingleFAQ = (event_id, question, answer, next) => {
 
 module.exports.fetchFaqs = (event_id, next) => {
     Event.findOne({_id: event_id}, 'faqs').exec(next);
+};
+
+module.exports.addASingleSpeaker = (event_id, name, description, img_url, next) => {
+    let speaker = {
+        name: name,
+        description: description,
+        image_url: img_url
+    };
+    Event.findOneAndUpdate({_id: event_id}, {$push: {speakers: speaker}}).exec(next);
+};
+
+module.exports.addSpeakers = (event_id, speakers, next) => {
+    Event.findOneAndUpdate({_id: event_id}, {$push: {speakers: {$each: speakers}}}).exec(next);
+};
+
+module.exports.addRegFeesTotheEvent = (event_id, amount, description, next) => {
+    let fees = {
+        amount: amount,
+        description: description
+    };
+    Event.findOneAndUpdate({_id: event_id}, {$push: {fees: fees}}).exec(next);
+};
+
+module.exports.modifyAboutOfTheEvent = (event_id, about, next) => {
+    Event.findOneAndUpdate({_id: event_id}, {about: about}).exec(next);
 };
