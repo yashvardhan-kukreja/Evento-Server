@@ -25,9 +25,9 @@ module.exports.fetchOrganisationDetails = (id) => {
 };
 
 // Controller for hosting an event
-module.exports.hostAnEvent = (name, date, location, organisation_id, reg_fees_amount, reg_fees_description, about) => {
+module.exports.hostAnEvent = (name, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts) => {
     return new Promise((resolve, reject) => {
-        EventTransactions.addAnEvent(name, date, location, organisation_id, reg_fees_amount, reg_fees_description, about, (err) => {
+        EventTransactions.addAnEvent(name, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, (err) => {
             if (err) {
                 console.log(err);
                 reject({success: false, message: "An error occurred"});
@@ -169,5 +169,28 @@ module.exports.modifyAboutOfTheEvent = (event_id, about) => {
             } else
                 resolve({success: true, message: "Modified the 'about' of the event"});
         });
+    });
+};
+
+// Controller for adding point of contacts to an event
+module.exports.addPointOfContacts = (event_id, names, contacts, emails) => {
+    return new Promise((resolve, reject) => {
+        let pocs = [];
+        for (let i = 0; i<names.length; i++) {
+            pocs.push({
+                name: names[i],
+                contact: contacts[i],
+                email: emails[i]
+            });
+        }
+        setTimeout(() => {
+            EventTransactions.addPointOfContacts(event_id, pocs, (err) => {
+                if (err) {
+                    console.log(err);
+                    reject({success: false, message: "An error occurred"});
+                } else
+                    resolve({success: true, message: "Added point of contacts"});
+            });
+        }, 300);
     });
 };
