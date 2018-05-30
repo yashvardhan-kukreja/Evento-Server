@@ -57,11 +57,23 @@ Delete an event
 - POST /organisation/delete-event: Headers ("x-access-token": token)
 - Response : {success: true, message: "Event removed successfully"}
 
+Add multiple FAQs to an event
+- POST /organisation/add-multiple-faqs: Headers ("x-access-token": token) & Parameters (event_id, questions <Array of questions>, answers <Array of answers>)
+- Response : {success: true, message: "Added FAQs to the event"}
+
+Add an FAQ to an event
+- POST /organisation/add-faq: Headers ("x-access-token": token) & Parameters (event_id, question, answer)
+- Response : {success: true, message: "FAQ added successfully"}
+
 **=> Event Routes:**
 
 Fetching event details
 - POST /event/fetch/info: Parameters (event_id)
 - Response : {success: true, message: "Event details fetched successfully", event: outputEvent}
+
+Fetching the FAQs of the given event
+- POST /event/fetch/faqs: Parameters (event_id)
+- Response : {success: true, message: "Fetched all the FAQs for this event", faqs: faqs}
 
 **=> Variables:**
 
