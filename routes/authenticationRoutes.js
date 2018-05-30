@@ -28,7 +28,7 @@ router.post('/organisation/register', (req, res) => {
     let college = req.body.college;
     let email = req.body.email;
     let contact = req.body.contact;
-    let password =req.body.password;
+    let password = req.body.password;
     AuthController.registerOrganisation(name, college, email, contact, password).then(data => res.json(data)).catch((err) => res.json(err));
 });
 
