@@ -6,6 +6,7 @@ const Promise = require('bluebird');
 
 const EventTransactions = require('../database/events/eventTransactions');
 
+// Controller for fetching the event details
 module.exports.fetchEventDetails = (event_id) => {
     return new Promise((resolve, reject) => {
         EventTransactions.findEventByEventId(event_id, (err, outputEvent) => {
@@ -19,6 +20,7 @@ module.exports.fetchEventDetails = (event_id) => {
     });
 };
 
+// Controller for fetching the list of participants in an event
 module.exports.listOfParticipantsForEvent = (event_id) => {
     return new Promise((resolve, reject) => {
         EventTransactions.findParticipantsOfAnEvent(event_id, (err, output) => {
@@ -32,6 +34,7 @@ module.exports.listOfParticipantsForEvent = (event_id) => {
     });
 };
 
+// Controller for verifying whether a user is the participant of the given event or not
 module.exports.verifyParticipantForAnEvent = (user_id, event_id) => {
     return new Promise((resolve, reject) => {
         EventTransactions.findParticipantIdsOfAnEvent(event_id, (err, output) => {
@@ -45,6 +48,25 @@ module.exports.verifyParticipantForAnEvent = (user_id, event_id) => {
                 else {
                     let participantIds = output.participants;
                     (participantIds.indexOf(user_id) >= 0) ? resolve({success: true, message: "User registered to the event"}) : reject({success: false, message: "User not registered to the event"});
+                }
+            }
+        });
+    });
+};
+
+// Controller for fetching the FAQs of the given event
+module.exports.fetchFaqs = (event_id) => {
+    return new Promise((resolve, reject) => {
+        EventTransactions.fetchFaqs(event_id, (err, output) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                if (!output)
+                    reject({success: false, message: "No FAQs are there for this event!"});
+                else {
+                    let faqs = output.faqs;
+                    resolve({success: true, message: "Fetched all the FAQs for this event", faqs: faqs});
                 }
             }
         });
