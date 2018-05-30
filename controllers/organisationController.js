@@ -25,9 +25,9 @@ module.exports.fetchOrganisationDetails = (id) => {
 };
 
 // Controller for hosting an event
-module.exports.hostAnEvent = (name, date, location, organisation_id) => {
+module.exports.hostAnEvent = (name, date, location, organisation_id, reg_fees_amount, reg_fees_description, about) => {
     return new Promise((resolve, reject) => {
-        EventTransactions.addAnEvent(name, date, location, organisation_id, (err) => {
+        EventTransactions.addAnEvent(name, date, location, organisation_id, reg_fees_amount, reg_fees_description, about, (err) => {
             if (err) {
                 console.log(err);
                 reject({success: false, message: "An error occurred"});
@@ -104,6 +104,70 @@ module.exports.addSingleFaqToAnEvent = (event_id, question, answer) => {
                 reject({success: false, message: "An error occurred"});
             } else
                 resolve({success: true, message: "FAQ added successfully"});
+        });
+    });
+};
+
+// Controller for adding multiple speakers to an event in one go
+module.exports.addSpeakersToAnEvent = (event_id, names, descriptions, img_urls) => {
+    return new Promise((resolve, reject) => {
+        let speakers = [];
+        for (let i = 0; i<names.length; i++) {
+            speakers.push({
+                name: names[i],
+                description: descriptions[i],
+                image_url: img_urls[i]
+            });
+        }
+        setTimeout(() => {
+            EventTransactions.addSpeakers(event_id, speakers, (err) => {
+                if (err) {
+                    console.log(err);
+                    reject({success: false, message: "An error occurred"});
+                } else
+                    resolve({success: true, message: "Speakers added to the event"});
+
+            });
+        }, 300);
+    });
+};
+
+// Controller for adding a single speaker to an event
+module.exports.addSingleSpeakerToAnEvent = (event_id, name, description, img_url) => {
+    return new Promise((resolve, reject) => {
+        EventTransactions.addASingleSpeaker(event_id, name, description, img_url, (err) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else
+                resolve({success: true, message: "Speaker added to the event"});
+        });
+    });
+};
+
+// Controller for adding fees to the event
+module.exports.addFeesToTheEvent = (event_id, amount, description) => {
+    return new Promise((resolve, reject) => {
+        EventTransactions.addRegFeesTotheEvent(event_id, amount, description, (err) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else
+                resolve({success: true, message: "Fees added to the event"});
+
+        });
+    });
+};
+
+// Controller for modifying the 'about' of the given event
+module.exports.modifyAboutOfTheEvent = (event_id, about) => {
+    return new Promise((resolve, reject) => {
+        EventTransactions.modifyAboutOfTheEvent(event_id, about, (err) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else
+                resolve({success: true, message: "Modified the 'about' of the event"});
         });
     });
 };
