@@ -27,12 +27,13 @@ router.get('/fetch/info', (req, res) => {
 router.post('/host-event', (req, res) => {
     let organisation_id = req.decoded._id;
     let name = req.body.event_name;
-    let date = req.body.event_date;
+    let start_date = req.body.start_date;
+    let end_date = req.body.end_date;
     let location = req.body.event_location;
-    let reg_fees_amount = req.body.reg_fees_amount;
-    let reg_fees_description = req.body.reg_fees_description;
+    let reg_fees = req.body.reg_fees;
+    let point_of_contacts = req.body.point_of_contacts;
     let about = req.body.about;
-    OrganisationController.hostAnEvent(name, date, location, organisation_id, reg_fees_amount, reg_fees_description, about).then(data => res.json(data)).catch(err => res.json(err));
+    OrganisationController.hostAnEvent(name, start_date, end_date, location, organisation_id, reg_fees, about, point_of_contacts).then(data => res.json(data)).catch(err => res.json(err));
 });
 
 // Route for deleting an event
@@ -114,6 +115,19 @@ router.post('/event/modify-about', (req, res) => {
     let event_id = req.body.event_id;
     OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
         .then(ifAuthorized => OrganisationController.modifyAboutOfTheEvent(event_id, about))
+        .then(data => res.json(data))
+        .catch(err => res.json(err));
+});
+
+// Route for adding Point of Contacts in an event
+router.post('/event/add-pocs', (req, res) => {
+    let organisation_id = req.decoded._id;
+    let names = req.body.names;
+    let contacts = req.body.contacts;
+    let emails = req.body.emails;
+    let event_id = req.body.event_id;
+    OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
+        .then(ifAuthorized => OrganisationController.addPointOfContacts(event_id, names, contacts, emails))
         .then(data => res.json(data))
         .catch(err => res.json(err));
 });
