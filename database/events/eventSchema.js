@@ -7,7 +7,6 @@ var eventSchema = new mongoose.Schema({
     eventName: {
         type: String,
         required: true
-        // TODO: ask Karishnu how to make sure that any event under certain organisation has unique eventName. Obviously, that can't be done by setting unique: true
     },
     eventDate: {
         type: String,
@@ -51,7 +50,21 @@ var eventSchema = new mongoose.Schema({
                 type: String
             }
         }
-    ]
+    ],
+    fees: [
+        {
+            amount: {
+                type: Number
+            },
+            description: {
+                type: String
+            }
+        }
+    ],
+    about: {
+        type: String,
+        default: "No description available"
+    }
 });
 
 // Making sure that there exists no two or more events having same eventName and hostingOrganisation
