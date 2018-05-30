@@ -81,14 +81,38 @@ Delete an event
 
 Add multiple FAQs to an event
 ```
-- POST /organisation/add-multiple-faqs: Headers ("x-access-token": token) & Parameters (event_id, questions <Array of questions>, answers <Array of answers>)
+- POST /organisation/event/add-multiple-faqs: Headers ("x-access-token": token) & Parameters (event_id, questions <Array of questions>, answers <Array of answers>)
 - Response : {success: true, message: "Added FAQs to the event"}
 ```
 
 Add an FAQ to an event
 ```
-- POST /organisation/add-faq: Headers ("x-access-token": token) & Parameters (event_id, question, answer)
+- POST /organisation/event/add-faq: Headers ("x-access-token": token) & Parameters (event_id, question, answer)
 - Response : {success: true, message: "FAQ added successfully"}
+```
+
+Add multiple speakers to an event
+```
+- POST /organisation/event/add-multiple-speakers: Headers ("x-access-token": token) & Parameters (event_id, names <Array of names>, descriptions <Array of descriptions>, img_urls <Array of image URLs>)
+- Response : {success: true, message: "Added speakers to the event"}
+```
+
+Add a speaker to an event
+```
+- POST /organisation/event/add-speaker: Headers ("x-access-token": token) & Parameters (event_id, name, description, img_url)
+- Response : {success: true, message: "Speaker added successfully"}
+```
+
+Add fees to the event
+```
+- POST /organisation/event/add-fees: Headers ("x-access-token": token) & Parameters (event_id, amount, description)
+- Response : {success: true, message: "Fees added successfully"}
+```
+
+Modify the 'about' of an event
+```
+- POST /organisation/event/modify-about: Headers ("x-access-token": token) & Parameters (event_id, about)
+- Response : {success: true, message: "Modified 'about' of the event successfully"}
 ```
 
 **=> Event Routes:**
