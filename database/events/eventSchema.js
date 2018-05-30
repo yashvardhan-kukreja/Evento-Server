@@ -28,6 +28,29 @@ var eventSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }
+    ],
+    faqs: [
+        {
+            question: {
+                type: String
+            },
+            answer: {
+                type: String
+            }
+        }
+    ],
+    speakers: [
+        {
+            name: {
+                type: String
+            },
+            description: {
+                type: String
+            },
+            image_url: {
+                type: String
+            }
+        }
     ]
 });
 
