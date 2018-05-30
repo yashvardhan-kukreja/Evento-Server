@@ -12,13 +12,15 @@ module.exports.findEventByEventId = (event_id, next) => {
     Event.findOne({_id: event_id}, {participants: 0}).populate({path: 'hostingOrganisation', model: 'Organisation'}).exec(next);
 };
 
-module.exports.addAnEvent = (name, date, location, organisation_id, reg_fees_amount, reg_fees_description, about, next) => {
+module.exports.addAnEvent = (name, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, next) => {
     let newEvent = new Event({
         eventName: name,
-        eventDate: date,
+        eventStartDate: start_date,
+        eventEndDate: end_date,
         eventLocation: location,
         hostingOrganisation: organisation_id,
-        fees: [{ amount: reg_fees_amount, description: reg_fees_description }],
+        fees: reg_fees,
+        pointOfContacts: pointOfContacts,
         about: about
     });
     newEvent.save(next);
@@ -87,4 +89,8 @@ module.exports.addRegFeesTotheEvent = (event_id, amount, description, next) => {
 
 module.exports.modifyAboutOfTheEvent = (event_id, about, next) => {
     Event.findOneAndUpdate({_id: event_id}, {about: about}).exec(next);
+};
+
+module.exports.addPointOfContacts = (event_id, contacts, next) => {
+    Event.findOneAndUpdate({_id: event_id}, {$push: {pointOfContacts: {$each: contacts}}}).exec(next);
 };
