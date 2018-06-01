@@ -81,25 +81,25 @@ Delete an event
 
 Add multiple FAQs to an event
 ```
-- POST /organisation/event/add-multiple-faqs: Headers ("x-access-token": token) & Parameters (event_id, questions <Array of questions>, answers <Array of answers>)
+- POST /organisation/event/add-faqs: Headers ("x-access-token": token) & Parameters (event_id, questions <Array of questions>, answers <Array of answers>)
 - Response : {success: true, message: "Added FAQs to the event"}
 ```
 
 Add an FAQ to an event
 ```
-- POST /organisation/event/add-faq: Headers ("x-access-token": token) & Parameters (event_id, question, answer)
+- POST /organisation/event/add-faqs: Headers ("x-access-token": token) & Parameters (event_id, question, answer)
 - Response : {success: true, message: "FAQ added successfully"}
 ```
 
 Add multiple speakers to an event
 ```
-- POST /organisation/event/add-multiple-speakers: Headers ("x-access-token": token) & Parameters (event_id, names <Array of names>, descriptions <Array of descriptions>, img_urls <Array of image URLs>)
+- POST /organisation/event/add-speakers: Headers ("x-access-token": token) & Parameters (event_id, names <Array of names>, descriptions <Array of descriptions>, img_urls <Array of image URLs>)
 - Response : {success: true, message: "Added speakers to the event"}
 ```
 
 Add a speaker to an event
 ```
-- POST /organisation/event/add-speaker: Headers ("x-access-token": token) & Parameters (event_id, name, description, img_url)
+- POST /organisation/event/add-speakers: Headers ("x-access-token": token) & Parameters (event_id, name, description, img_url)
 - Response : {success: true, message: "Speaker added successfully"}
 ```
 
@@ -115,10 +115,16 @@ Modify the 'about' of an event
 - Response : {success: true, message: "Modified 'about' of the event successfully"}
 ```
 
-Add point of contacts to the event
+Add multiple point of contacts to the event
 ```
-- POST /organisation/event/add-pocs: Headers ("x-access-token": token) & Parameters (event_id, name <Array of names>, contacts <Array of contacts>, emails <Array of emails>)
+- POST /organisation/event/add-pocs: Headers ("x-access-token": token) & Parameters (event_id, names <Array of names>, contacts <Array of contacts>, emails <Array of emails>)
 - Response : {success: true, message: "Point of contacts added successfully"}
+```
+
+Add a point of contact to the event
+```
+- POST /organisation/event/add-pocs: Headers ("x-access-token": token) & Parameters (event_id, name, contact, email)
+- Response : {success: true, message: "Added point of contact successfully"}
 ```
 
 **=> Event Routes:**
