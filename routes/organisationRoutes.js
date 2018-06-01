@@ -97,9 +97,9 @@ router.post('/event/modify-about', (req, res) => {
 // Route for adding Point of Contacts in an event
 router.post('/event/add-pocs', (req, res) => {
     let organisation_id = req.decoded._id;
-    let names = req.body.names;
-    let contacts = req.body.contacts;
-    let emails = req.body.emails;
+    let names = req.body.names || req.body.name;
+    let contacts = req.body.contacts || req.body.contact;
+    let emails = req.body.emails || req.body.email;
     let event_id = req.body.event_id;
     OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
         .then(ifAuthorized => OrganisationController.addPointOfContacts(event_id, names, contacts, emails))
