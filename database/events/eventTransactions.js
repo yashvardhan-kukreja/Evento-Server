@@ -94,3 +94,12 @@ module.exports.modifyAboutOfTheEvent = (event_id, about, next) => {
 module.exports.addPointOfContacts = (event_id, contacts, next) => {
     Event.findOneAndUpdate({_id: event_id}, {$push: {pointOfContacts: {$each: contacts}}}).exec(next);
 };
+
+module.exports.addASinglePointOfContact = (event_id, name, email, contact_number, next) => {
+    let poc = {
+        name: name,
+        email: email,
+        contact: contact_number
+    };
+    Event.findOneAndUpdate({_id: event_id}, {$push: {pointOfContacts: poc}}).exec(next);
+};
