@@ -46,11 +46,11 @@ router.post('/delete-event', (req, res) => {
         .catch(err => res.json(err));
 });
 
-// Route for adding multiple FAQs in one go
-router.post('/event/add-multiple-faqs', (req, res) => {
+// Route for adding one or more FAQs in one go
+router.post('/event/add-faqs', (req, res) => {
     let organisation_id = req.decoded._id;
-    let questions = req.body.questions;
-    let answers = req.body.answers;
+    let questions = req.body.questions || req.body.question;
+    let answers = req.body.answers || req.body.answer;
     let event_id = req.body.event_id;
     OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
         .then(ifAuthorized => OrganisationController.addFaqsToAnEvent(event_id, questions, answers))
@@ -58,40 +58,15 @@ router.post('/event/add-multiple-faqs', (req, res) => {
         .catch(err => res.json(err));
 });
 
-// Route for adding a single FAQ
-router.post('/event/add-faq', (req, res) => {
+// Route for adding one or more speakers in one go
+router.post('/event/add-speakers', (req, res) => {
     let organisation_id = req.decoded._id;
-    let question = req.body.question;
-    let answer = req.body.answer;
-    let event_id = req.body.event_id;
-    OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
-        .then(ifAuthorized => OrganisationController.addSingleFaqToAnEvent(event_id, question, answer))
-        .then(data => res.json(data))
-        .catch(err => res.json(err));
-});
-
-// Route for adding multiple speakers in one go
-router.post('/event/add-multiple-speakers', (req, res) => {
-    let organisation_id = req.decoded._id;
-    let names = req.body.names;
-    let descriptions = req.body.descriptions;
-    let img_urls = req.body.img_urls;
+    let names = req.body.names || req.body.name;
+    let descriptions = req.body.descriptions || req.body.description;
+    let img_urls = req.body.img_urls || req.body.img_url;
     let event_id = req.body.event_id;
     OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
         .then(ifAuthorized => OrganisationController.addSpeakersToAnEvent(event_id, names, descriptions, img_urls))
-        .then(data => res.json(data))
-        .catch(err => res.json(err));
-});
-
-// Route for adding a single speaker
-router.post('/event/add-speaker', (req, res) => {
-    let organisation_id = req.decoded._id;
-    let name = req.body.name;
-    let description = req.body.description;
-    let img_url = req.body.img_url;
-    let event_id = req.body.event_id;
-    OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
-        .then(ifAuthorized => OrganisationController.addSingleSpeakerToAnEvent(event_id, name, description, img_url))
         .then(data => res.json(data))
         .catch(err => res.json(err));
 });
