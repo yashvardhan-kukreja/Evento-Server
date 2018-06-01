@@ -79,7 +79,7 @@ module.exports.addSpeakers = (event_id, speakers, next) => {
     Event.findOneAndUpdate({_id: event_id}, {$push: {speakers: {$each: speakers}}}).exec(next);
 };
 
-module.exports.addRegFeesTotheEvent = (event_id, amount, description, next) => {
+module.exports.addASingleRegFeesTotheEvent = (event_id, amount, description, next) => {
     let fees = {
         amount: amount,
         description: description
