@@ -73,82 +73,76 @@ module.exports.deleteAnEvent = (event_id) => {
     });
 };
 
-// Controller for adding multiple FAQs to an event in one go
+// Controller for adding one or more FAQs to an event in one go
 module.exports.addFaqsToAnEvent = (event_id, questions, answers) => {
     return new Promise((resolve, reject) => {
-        let faqs = [];
-        for (let i = 0; i<questions.length; i++) {
-            faqs.push({
-                question: questions[i],
-                answer: answers[i]
-            });
-        }
-        setTimeout(() => {
-            EventTransactions.addFaqs(event_id, faqs, (err) => {
+        if (typeof (questions) === 'string') {
+            EventTransactions.addASingleFAQ(event_id, questions, answers, (err) => {
                 if (err) {
                     console.log(err);
                     reject({success: false, message: "An error occurred"});
                 } else
-                    resolve({success: true, message: "Added FAQs to the event"});
+                    resolve({success: true, message: "FAQ added successfully"});
             });
-        }, 300);
+        } else {
+            var faqs = [];
+            for (let i = 0; i<questions.length; i++) {
+                faqs.push({
+                    question: questions[i],
+                    answer: answers[i]
+                });
+            }
+            setTimeout(() => {
+                EventTransactions.addFaqs(event_id, faqs, (err) => {
+                    if (err) {
+                        console.log(err);
+                        reject({success: false, message: "An error occurred"});
+                    } else
+                        resolve({success: true, message: "Added FAQs to the event"});
+                });
+            }, 300);
+        }
     });
 };
 
-//Controller for adding a single FAQ to an event
-module.exports.addSingleFaqToAnEvent = (event_id, question, answer) => {
-    return new Promise((resolve, reject) => {
-        EventTransactions.addASingleFAQ(event_id, question, answer, (err) => {
-            if (err) {
-                console.log(err);
-                reject({success: false, message: "An error occurred"});
-            } else
-                resolve({success: true, message: "FAQ added successfully"});
-        });
-    });
-};
-
-// Controller for adding multiple speakers to an event in one go
+// Controller for adding one or more speakers to an event in one go
 module.exports.addSpeakersToAnEvent = (event_id, names, descriptions, img_urls) => {
     return new Promise((resolve, reject) => {
-        let speakers = [];
-        for (let i = 0; i<names.length; i++) {
-            speakers.push({
-                name: names[i],
-                description: descriptions[i],
-                image_url: img_urls[i]
-            });
-        }
-        setTimeout(() => {
-            EventTransactions.addSpeakers(event_id, speakers, (err) => {
+        if (typeof(names) === 'string') {
+            EventTransactions.addASingleSpeaker(event_id, names, descriptions, img_urls, (err) => {
                 if (err) {
                     console.log(err);
                     reject({success: false, message: "An error occurred"});
                 } else
-                    resolve({success: true, message: "Speakers added to the event"});
-
+                    resolve({success: true, message: "Speaker added to the event"});
             });
-        }, 300);
-    });
-};
+        } else {
+            let speakers = [];
+            for (let i = 0; i<names.length; i++) {
+                speakers.push({
+                    name: names[i],
+                    description: descriptions[i],
+                    image_url: img_urls[i]
+                });
+            }
+            setTimeout(() => {
+                EventTransactions.addSpeakers(event_id, speakers, (err) => {
+                    if (err) {
+                        console.log(err);
+                        reject({success: false, message: "An error occurred"});
+                    } else
+                        resolve({success: true, message: "Speakers added to the event"});
 
-// Controller for adding a single speaker to an event
-module.exports.addSingleSpeakerToAnEvent = (event_id, name, description, img_url) => {
-    return new Promise((resolve, reject) => {
-        EventTransactions.addASingleSpeaker(event_id, name, description, img_url, (err) => {
-            if (err) {
-                console.log(err);
-                reject({success: false, message: "An error occurred"});
-            } else
-                resolve({success: true, message: "Speaker added to the event"});
-        });
+                });
+            }, 300);
+        }
     });
 };
 
 // Controller for adding fees to the event
 module.exports.addFeesToTheEvent = (event_id, amount, description) => {
     return new Promise((resolve, reject) => {
-        EventTransactions.addRegFeesTotheEvent(event_id, amount, description, (err) => {
+        EventTransactions.addASingleRegFeesTotheEvent(event_id, amount, description, (err) => {
             if (err) {
                 console.log(err);
                 reject({success: false, message: "An error occurred"});
