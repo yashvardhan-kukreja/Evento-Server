@@ -166,25 +166,35 @@ module.exports.modifyAboutOfTheEvent = (event_id, about) => {
     });
 };
 
-// Controller for adding point of contacts to an event
+// Controller for adding one or more point of contacts to an event
 module.exports.addPointOfContacts = (event_id, names, contacts, emails) => {
     return new Promise((resolve, reject) => {
-        let pocs = [];
-        for (let i = 0; i<names.length; i++) {
-            pocs.push({
-                name: names[i],
-                contact: contacts[i],
-                email: emails[i]
-            });
-        }
-        setTimeout(() => {
-            EventTransactions.addPointOfContacts(event_id, pocs, (err) => {
+        if (typeof (names) === 'string') {
+            EventTransactions.addASinglePointOfContact(event_id, names, emails, contacts, (err) => {
                 if (err) {
                     console.log(err);
                     reject({success: false, message: "An error occurred"});
                 } else
-                    resolve({success: true, message: "Added point of contacts"});
+                    resolve({success: true, message: "Point of contact added successfully"});
             });
-        }, 300);
+        } else {
+            let pocs = [];
+            for (let i = 0; i<names.length; i++) {
+                pocs.push({
+                    name: names[i],
+                    contact: contacts[i],
+                    email: emails[i]
+                });
+            }
+            setTimeout(() => {
+                EventTransactions.addPointOfContacts(event_id, pocs, (err) => {
+                    if (err) {
+                        console.log(err);
+                        reject({success: false, message: "An error occurred"});
+                    } else
+                        resolve({success: true, message: "Added point of contacts"});
+                });
+            }, 300);
+        }
     });
 };
