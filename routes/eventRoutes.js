@@ -11,6 +11,12 @@ router.post('/fetch/info', (req, res) => {
     EventController.fetchEventDetails(event_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
+// Route for fetching the participants of an event
+router.post('/fetch/participants', (req, res) => {
+    let event_id = req.body.event_id;
+    EventController.listOfParticipantsForEvent(event_id).then(data => res.json(data)).catch(err => res.json(err));
+});
+
 // Route for fetching the FAQs of an event
 router.post('/fetch/faqs', (req, res) => {
     let event_id = req.body.event_id;
