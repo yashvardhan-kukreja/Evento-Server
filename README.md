@@ -146,3 +146,5 @@ Fetching the FAQs of the given event
 - token: JSON Web Token containing the user object or the organisation object in encoded form
 - user: A user object containing the respective user details except _id and password
 - organisation: An organisation object containing the respective organisation details except _id and password
+- event - An event object containing the respective event details along with a list of its participants, hosting organisation, point of contacts and speakers
+- faq - An object containing a 'question' field and an 'answer' field
