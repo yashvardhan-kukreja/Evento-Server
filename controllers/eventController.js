@@ -44,7 +44,7 @@ module.exports.verifyParticipantForAnEvent = (user_id, event_id) => {
                 reject({success: false, message: "An error occurred"});
             } else {
                 if (!output)
-                    reject({succesS: false, message: "No participants of the event found"});
+                    reject({success: false, message: "No participants of the event found"});
                 else {
                     let participantIds = output.participants;
                     (participantIds.indexOf(user_id) >= 0) ? resolve({success: true, message: "User registered to the event"}) : reject({success: false, message: "User not registered to the event"});
