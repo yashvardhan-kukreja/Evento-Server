@@ -50,7 +50,7 @@ Fetching the events in which the user participated
 Participate(Register) in an event
 ```
 - POST /user/participate: Headers ("x-access-token": token) & Parameters (event_id)
-- Response : {success: true, message: "Registered to the event successfully"}```
+- Response : {success: true, message: "Registered to the event successfully"}
 ```
 
 Login to an event (Verifying whether a part of the given event or not)
@@ -129,10 +129,16 @@ Add a point of contact to the event
 
 **=> Event Routes:**
 
-Fetching event details
+Fetching event details (without the list of participants)
 ```
 - POST /event/fetch/info: Parameters (event_id)
 - Response : {success: true, message: "Event details fetched successfully", event: outputEvent}
+```
+
+Fetching the list of participants (with details) for an event
+```
+- POST /event/fetch/info: Parameters (event_id)
+- Response : {success: true, message: "Participants fetched successfully", participants: <Array of user objects which are participants in this event>}
 ```
 
 Fetching the FAQs of the given event
