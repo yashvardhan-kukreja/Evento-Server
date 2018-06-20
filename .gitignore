@@ -19,3 +19,4 @@ config.js
 .idea/**/gradle.xml
 .idea/**/libraries
 .idea_modules/
+/config.js
