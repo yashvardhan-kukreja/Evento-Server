@@ -38,7 +38,7 @@ Organisation Login
 Fetching user details
 ```
 - GET /user/fetch/personal-info: Headers ("x-access-token": token)
-- Response : {success: true, message: "User details fetched successfully", user: user}
+- Response : {success: true, message: "User details fetched successfully", user: {_id: id, name: name, password: password, email: email, username: username, contact: contact}}
 ```
 
 Fetching the events in which the user participated
