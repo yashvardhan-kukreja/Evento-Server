@@ -137,8 +137,8 @@ Fetching event details (without the list of participants)
 
 Fetching the list of participants (with details) for an event
 ```
-- POST /event/fetch/info: Parameters (event_id)
-- Response : {success: true, message: "Participants fetched successfully", participants: <Array of user objects which are participants in this event>}
+- POST /event/fetch/participants: Parameters (event_id)
+- Response : {success:true, message: "Participants fetched successfully", participants: <Array of user objects which are participants in this event>}
 ```
 
 Fetching the FAQs of the given event
