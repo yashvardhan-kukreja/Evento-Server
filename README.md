@@ -20,6 +20,14 @@ User Login
 - POST /authenticate/user/login : Parameters (email, password) or (username, password)
 - Response : {success: true, message: "User authenticated successfully", token: token}
 ```
+```
+- Sample Response :
+{
+    "success": true,
+    "message": "User authenticated successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJThisIsAFalseTokenJackassCJuYW1lIjoiWWFzaHZhcmRoYW4SupNiggagS3VrcmVqYSIsInVzZXJDamnItFeelsGoodToBeAGangstauYW1lIjoibHVjaTQiCI6Inlhc2gua3VrcmVqYS45OEBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYSQxMCRQbFZvcWttYXZ2Qm4vZ2lEd1VKbkZlaUVWZkZhem5lRUlVN2UyV0wuZnpuZ0hqVXlwWm85RyIsImNvbnRhY3QiOiI5OTk5NzEyNDI2IiwiX192IjowLCJpYXQiOjE1Mjk1NjYwNzd9._-1uBi0XfncvddPCsDAav6ZiZX_M6WHEEV0azjUX3l8"
+}
+```
 
 Organisation SignUp
 ```
@@ -32,6 +40,14 @@ Organisation Login
 - POST /authenticate/organisation/login : Parameters (email, password)
 - Response : {success: true, message: "Organisation authenticated successfully", token: token}
 ```
+```
+- Sample Response :
+{
+    "success": true,
+    "message": "Organisation authenticated successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJThisIsAFalseTokenJackassCJuYW1lIjoiWWFzaHZhcmRoYW4SupNiggagS3VrcmVqYSIsInVzZXJDamnItFeelsGoodToBeAGangstauYW1lIjoibHVjaTQiCI6Inlhc2gua3VrcmVqYS45OEBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYSQxMCRQbFZvcWttYXZ2Qm4vZ2lEd1VKbkZlaUVWZkZhem5lRUlVN2UyV0wuZnpuZ0hqVXlwWm85RyIsImNvbnRhY3QiOiI5OTk5NzEyNDI2IiwiX192IjowLCJpYXQiOjE1Mjk1NjYwNzd9._-1uBi0XfncvddPCsDAav6ZiZX_M6WHEEV0azjUX3l8"
+}
+```
 
 **=> User Routes:**
 
@@ -41,10 +57,91 @@ Fetching user details
 - Response : {success: true, message: "User details fetched successfully", user: {_id: id, name: name, password: password, email: email, username: username, contact: contact}}
 ```
 
+```
+- Sample Response :
+{
+    "success": true,
+    "message": "User details fetched successfully",
+    "user": {
+        "name": "Yashvardhan Kukreja",
+        "username": "luci4",
+        "email": "yash.kukreja.98@gmail.com",
+        "contact": "9999712426",
+        "__v": 0
+    }
+}
+```
+
 Fetching the events in which the user participated
 ```
 - GET /user/fetch/participated-events: Headers ("x-access-token": token)
 - Response : {success: true, message: "Participated events fetched", events: outputEvents}
+```
+```
+- Sample Response :
+{
+    "success": true,
+    "message": "Participated events fetched",
+    "events": [
+        {
+            "about": "Techloop is an IEEE initiative which began with a simple objective: Students Teaching Students. Techloop provides an environment for students to learn from other students by the means of hands-on projects and interactive sessions. As the tagline, ‘stay in the loop’ suggests, Techloop truly keeps the students informed about all the happenings and developments in the technological industry. ITC presents three parallel techloop tracks: Artificial Intelligence, Internet Of Things and Android Application Development. \n",
+            "faqs": [],
+            "speakers": [],
+            "fees": [
+                {
+                    "_id": "5b0e9c1120b960763fb36aba",
+                    "amount": 500,
+                    "description": "Day 1 + Day 2 + Day 3 (For IEEE Member)"
+                },
+                {
+                    "_id": "5b0e9d5a20b960763fb36abb",
+                    "amount": 400,
+                    "description": "Day 2 + Day 3 (For IEEE Member)"
+                },
+                {
+                    "_id": "5b0e9d9720b960763fb36abc",
+                    "amount": 600,
+                    "description": "Day 1 + Day 2 + Day 3 (For Non IEEE Member)"
+                },
+                {
+                    "_id": "5b0e9db420b960763fb36abd",
+                    "amount": 500,
+                    "description": "Day 2 + Day 3 (For Non IEEE Member)"
+                }
+            ],
+            "pointOfContacts": [
+                {
+                    "_id": "5b0ea31ebf14ce789959a55d",
+                    "name": "Apoorva Junnuri",
+                    "contact": "+919789988683 ",
+                    "email": "apoorvajunnuri.30@gmail.com"
+                },
+                {
+                    "_id": "5b0ea31ebf14ce789959a55c",
+                    "name": "Ayush Priya",
+                    "contact": "+917530000626",
+                    "email": "ayushpriya10@ieee.org"
+                }
+            ],
+            "_id": "5b0e9c1120b960763fb36ab9",
+            "eventName": "IEEE Techloop Congress",
+            "eventStartDate": "03-08-2018",
+            "eventEndDate": "05-08-2018",
+            "eventLocation": "<Some Auditorium>",
+            "hostingOrganisation": {
+                "authorized": true,
+                "_id": "5b0e9a54c7a5c575988a8536",
+                "orgName": "IEEE-VIT",
+                "college": "VIT University, Vellore",
+                "concernedEmail": "ieee@gmail.com",
+                "concernedContact": "+919999712426",
+                "password": "$2a$10$NS1KtidJXXAppnFTh0qUh.eRcNVOzo9bBffQLeeYlg.LPD0k3jSQG",
+                "__v": 0
+            },
+            "__v": 0
+        }
+    ]
+}
 ```
 
 Participate(Register) in an event
@@ -56,7 +153,7 @@ Participate(Register) in an event
 Login to an event (Verifying whether a part of the given event or not)
 ```
 - POST /user/verification: Headers ("x-access-token": token) & Parameters (event_id)
-- Response : {success: true, message: "User registered to the event"}```
+- Response : {success: true, message: "User registered to the event"}
 ```
 
 **=> Organisation Routes:**
@@ -65,6 +162,21 @@ Fetching organisation details
 ```
 - GET /organisation/fetch/info: Headers ("x-access-token": token)
 - Response : {success: true, message: "Organisation details fetched successfully", organisation: organisation}
+```
+```
+- Sample Response :
+{
+    "success": true,
+    "message": "Organisation details fetched successfully",
+    "organisation": {
+        "authorized": true,
+        "orgName": "IEEE-VIT",
+        "college": "VIT University, Vellore",
+        "concernedEmail": "ieee@gmail.com",
+        "concernedContact": "+919999712426",
+        "__v": 0
+    }
+}
 ```
 
 Host an event
@@ -134,11 +246,92 @@ Fetching event details (without the list of participants)
 - POST /event/fetch/info: Parameters (event_id)
 - Response : {success: true, message: "Event details fetched successfully", event: outputEvent}
 ```
-
+```
+- Sample Response :
+{
+    "success": true,
+    "message": "Event details fetched successfully",
+    "event": {
+        "about": "Techloop is an IEEE initiative which began with a simple objective: Students Teaching Students. Techloop provides an environment for students to learn from other students by the means of hands-on projects and interactive sessions. As the tagline, ‘stay in the loop’ suggests, Techloop truly keeps the students informed about all the happenings and developments in the technological industry. ITC presents three parallel techloop tracks: Artificial Intelligence, Internet Of Things and Android Application Development. \n",
+        "faqs": [],
+        "speakers": [],
+        "fees": [
+            {
+                "_id": "5b0e9c1120b960763fb36aba",
+                "amount": 500,
+                "description": "Day 1 + Day 2 + Day 3 (For IEEE Member)"
+            },
+            {
+                "_id": "5b0e9d5a20b960763fb36abb",
+                "amount": 400,
+                "description": "Day 2 + Day 3 (For IEEE Member)"
+            },
+            {
+                "_id": "5b0e9d9720b960763fb36abc",
+                "amount": 600,
+                "description": "Day 1 + Day 2 + Day 3 (For Non IEEE Member)"
+            },
+            {
+                "_id": "5b0e9db420b960763fb36abd",
+                "amount": 500,
+                "description": "Day 2 + Day 3 (For Non IEEE Member)"
+            }
+        ],
+        "pointOfContacts": [
+            {
+                "_id": "5b0ea31ebf14ce789959a55d",
+                "name": "Apoorva Junnuri",
+                "contact": "+919789988683 ",
+                "email": "apoorvajunnuri.30@gmail.com"
+            },
+            {
+                "_id": "5b0ea31ebf14ce789959a55c",
+                "name": "Ayush Priya",
+                "contact": "+917530000626",
+                "email": "ayushpriya10@ieee.org"
+            }
+        ],
+        "_id": "5b0e9c1120b960763fb36ab9",
+        "eventName": "IEEE Techloop Congress",
+        "eventStartDate": "03-08-2018",
+        "eventEndDate": "05-08-2018",
+        "eventLocation": "<Some Auditorium>",
+        "hostingOrganisation": {
+            "authorized": true,
+            "_id": "5b0e9a54c7a5c575988a8536",
+            "orgName": "IEEE-VIT",
+            "college": "VIT University, Vellore",
+            "concernedEmail": "ieee@gmail.com",
+            "concernedContact": "+919999712426",
+            "password": "$2a$10$NS1KtidJXXAppnFTh0qUh.eRcNVOzo9bBffQLeeYlg.LPD0k3jSQG",
+            "__v": 0
+        },
+        "__v": 0
+    }
+}
+```
 Fetching the list of participants (with details) for an event
 ```
 - POST /event/fetch/participants: Parameters (event_id)
 - Response : {success:true, message: "Participants fetched successfully", participants: <Array of user objects which are participants in this event>}
+```
+```
+- Sample Response :
+{
+    "success": true,
+    "message": "Participants fetched successfully",
+    "participants": [
+        {
+            "_id": "5abbd86032f6580014e7968c",
+            "name": "Yashvardhan Kukreja",
+            "username": "luci4",
+            "email": "yash.kukreja.98@gmail.com",
+            "password": "$2a$10$PlVoqkmavvBn/giDwUJnFeiEVfFazneEIU7e2WL.fzngHjUypZo9G",
+            "contact": "9999712426",
+            "__v": 0
+        }
+    ]
+}
 ```
 
 Fetching the FAQs of the given event
