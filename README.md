@@ -20,7 +20,7 @@ User Login
 - POST /authenticate/user/login : Parameters (email, password) or (username, password)
 - Response : {success: true, message: "User authenticated successfully", token: token}
 ```
-```
+```js
 - Sample Response :
 {
     "success": true,
@@ -40,7 +40,7 @@ Organisation Login
 - POST /authenticate/organisation/login : Parameters (email, password)
 - Response : {success: true, message: "Organisation authenticated successfully", token: token}
 ```
-```
+```js
 - Sample Response :
 {
     "success": true,
@@ -56,8 +56,7 @@ Fetching user details
 - GET /user/fetch/personal-info: Headers ("x-access-token": token)
 - Response : {success: true, message: "User details fetched successfully", user: {_id: id, name: name, password: password, email: email, username: username, contact: contact}}
 ```
-
-```
+```js
 - Sample Response :
 {
     "success": true,
@@ -77,7 +76,7 @@ Fetching the events in which the user participated
 - GET /user/fetch/participated-events: Headers ("x-access-token": token)
 - Response : {success: true, message: "Participated events fetched", events: outputEvents}
 ```
-```
+```js
 - Sample Response :
 {
     "success": true,
@@ -163,7 +162,7 @@ Fetching organisation details
 - GET /organisation/fetch/info: Headers ("x-access-token": token)
 - Response : {success: true, message: "Organisation details fetched successfully", organisation: organisation}
 ```
-```
+```js
 - Sample Response :
 {
     "success": true,
@@ -246,7 +245,7 @@ Fetching event details (without the list of participants)
 - POST /event/fetch/info: Parameters (event_id)
 - Response : {success: true, message: "Event details fetched successfully", event: outputEvent}
 ```
-```
+```js
 - Sample Response :
 {
     "success": true,
@@ -315,7 +314,7 @@ Fetching the list of participants (with details) for an event
 - POST /event/fetch/participants: Parameters (event_id)
 - Response : {success:true, message: "Participants fetched successfully", participants: <Array of user objects which are participants in this event>}
 ```
-```
+```js
 - Sample Response :
 {
     "success": true,
