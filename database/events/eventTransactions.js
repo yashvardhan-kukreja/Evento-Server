@@ -15,6 +15,7 @@ module.exports.findEventByEventId = (event_id, next) => {
 module.exports.addAnEvent = (name, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, next) => {
     let newEvent = new Event({
         eventName: name,
+        eventId: name.toLowerCase().replace(" ", "_"),
         eventStartDate: start_date,
         eventEndDate: end_date,
         eventLocation: location,
