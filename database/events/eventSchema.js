@@ -8,6 +8,9 @@ var eventSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    eventId: {
+        type: String
+    },
     eventStartDate: {
         type: String,
         required: true
