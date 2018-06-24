@@ -25,9 +25,9 @@ module.exports.fetchOrganisationDetails = (id) => {
 };
 
 // Controller for hosting an event
-module.exports.hostAnEvent = (name, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts) => {
+module.exports.hostAnEvent = (name, event_session_names, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs) => {
     return new Promise((resolve, reject) => {
-        EventTransactions.addAnEvent(name, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, (err) => {
+        EventTransactions.addAnEvent(name, event_session_names, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, (err) => {
             if (err) {
                 console.log(err);
                 reject({success: false, message: "An error occurred"});

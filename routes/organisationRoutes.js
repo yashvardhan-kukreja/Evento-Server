@@ -27,13 +27,15 @@ router.get('/fetch/info', (req, res) => {
 router.post('/host-event', (req, res) => {
     let organisation_id = req.decoded._id;
     let name = req.body.event_name;
+    let event_session_names = req.body.event_session_names;
     let start_date = req.body.start_date;
     let end_date = req.body.end_date;
     let location = req.body.event_location;
     let reg_fees = req.body.reg_fees;
     let point_of_contacts = req.body.point_of_contacts;
     let about = req.body.about;
-    OrganisationController.hostAnEvent(name, start_date, end_date, location, organisation_id, reg_fees, about, point_of_contacts).then(data => res.json(data)).catch(err => res.json(err));
+    let faqs = req.body.faqs;
+    OrganisationController.hostAnEvent(name, event_session_names, start_date, end_date, location, organisation_id, reg_fees, about, point_of_contacts, faqs).then(data => res.json(data)).catch(err => res.json(err));
 });
 
 // Route for deleting an event

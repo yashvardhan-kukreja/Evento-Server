@@ -3,6 +3,7 @@
  */
 
 const Event = require('./eventSchema');
+const Middlewares = require('../../middlewares');
 
 module.exports.findEventByEventName = (event_name, next) => {
     Event.findOne({eventName: event_name}, {participants: 0}).populate({path: 'hostingOrganisation', model: 'Organisation'}).exec(next);
@@ -12,19 +13,34 @@ module.exports.findEventByEventId = (event_id, next) => {
     Event.findOne({eventId: event_id}, {participants: 0}).populate({path: 'hostingOrganisation', model: 'Organisation'}).exec(next);
 };
 
-module.exports.addAnEvent = (name, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, next) => {
-    let newEvent = new Event({
-        eventName: name,
-        eventId: name.toLowerCase().replace(" ", "_"),
-        eventStartDate: start_date,
-        eventEndDate: end_date,
-        eventLocation: location,
-        hostingOrganisation: organisation_id,
-        fees: reg_fees,
-        pointOfContacts: pointOfContacts,
-        about: about
-    });
-    newEvent.save(next);
+module.exports.addAnEvent = (name, event_session_names, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, next) => {
+
+    let eventSessions = [];
+
+    for (let i=0; i<event_session_names.length;i++) {
+        eventSessions.push({
+            name: event_session_names[i],
+            sessionId: Middlewares.convertAStringToNumber(event_session_names[i])
+        });
+    }
+
+    setTimeout(()=> {
+        let newEvent = new Event({
+            eventName: name,
+            eventSessions: eventSessions,
+            eventId: name.toLowerCase().replace(" ", "_"),
+            eventStartDate: start_date,
+            eventEndDate: end_date,
+            eventLocation: location,
+            hostingOrganisation: organisation_id,
+            fees: reg_fees,
+            pointOfContacts: pointOfContacts,
+            faqs: faqs,
+            about: about
+        });
+        newEvent.save(next);
+    }, 100);
+
 };
 
 module.exports.findParticipantsOfAnEvent = (event_id, next) => {

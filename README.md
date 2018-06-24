@@ -180,8 +180,11 @@ Fetching organisation details
 
 Host an event
 ```
-- POST /organisation/host-event: Headers ("x-access-token": token) & Parameters (event_name, start_date, end_date, event_location, organisation_id, reg_fees <Array of reg fees>, about, point_of_contacts <Array of point of contacts>)
+- POST /organisation/host-event: Headers ("x-access-token": token) & Parameters (event_name, event_sessions<Array of names of separate event sessions>, start_date, end_date, event_location, organisation_id(ObjectID of organisations), reg_fees <Array of reg fees>, about, point_of_contacts <Array of point of contacts>)
 - Response : {success: true, message: "Event hosted successfully"}
+-> event_sessions : [
+
+                        ]
 ```
 
 Delete an event
