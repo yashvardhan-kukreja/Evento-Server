@@ -204,7 +204,7 @@ module.exports.addSessions = (event_id, names, locations, start_times, end_times
         } else {
             let sessions = [];
             for (let i=0;i<names.length;i++) {
-                let sessionId = Middlewares.convertAStringToNumber(names[i]);
+                let sessionId = Middlewares.convertAStringToNumber(names[i] + start_times[i] + end_times[i] + locations[i]);
                 sessions.push({
                     name: names[i],
                     date: dates[i],
