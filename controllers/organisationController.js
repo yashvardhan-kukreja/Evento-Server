@@ -191,10 +191,10 @@ module.exports.addCoordinators = (event_id, coordinator_emails) => {
 };
 
 // Controller for adding one or more Sessions to an event
-module.exports.addSessions = (event_id, names, locations, times) => {
+module.exports.addSessions = (event_id, names, locations, times, dates) => {
     return new Promise((resolve, reject) => {
         if (typeof(names) === 'string') {
-            EventTransactions.addASingleSession(event_id, names, locations, times, (err) => {
+            EventTransactions.addASingleSession(event_id, names, locations, dates, times, (err) => {
                 if (err) {
                     console.log(err);
                     reject({success: false, message: "An error occurred"});
@@ -207,6 +207,7 @@ module.exports.addSessions = (event_id, names, locations, times) => {
                 let sessionId = Middlewares.convertAStringToNumber(names[i]);
                 sessions.push({
                     name: names[i],
+                    date: dates[i],
                     time: times[i],
                     location: locations[i],
                     sessionId: sessionId

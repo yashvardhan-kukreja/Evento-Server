@@ -19,6 +19,9 @@ var eventSchema = new mongoose.Schema({
             location: {
                 type: String
             },
+            date: {
+                type: String
+            }, // in the form of dd-mm-yyyy
             time: {
                 type: String,
                 uppercase: true

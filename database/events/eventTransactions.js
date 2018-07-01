@@ -110,10 +110,11 @@ module.exports.addSpeakers = (event_id, speakers, next) => {
     Event.findOneAndUpdate({eventId: event_id}, {$push: {speakers: {$each: speakers}}}).exec(next);
 };
 
-module.exports.addASingleSession = (event_id, session_name, session_location, session_time, next) => {
+module.exports.addASingleSession = (event_id, session_name, session_location, session_date, session_time, next) => {
     let sessionId = Middlewares.convertAStringToNumber(session_name);
     let session = {
         name: session_name,
+        date: session_date,
         time: session_time,
         location: session_location,
         sessionId: sessionId

@@ -127,9 +127,10 @@ router.post('/event/add-sessions', (req, res) => {
     let event_id = req.body.event_id;
     let names = req.body.names || req.body.name;
     let locations = req.body.locations || req.body.location;
+    let dates = req.body.dates || req.body.date;
     let times = req.body.times || req.body.time;
     OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
-        .then(ifAuthorized => OrganisationController.addSessions(event_id, names, locations, times))
+        .then(ifAuthorized => OrganisationController.addSessions(event_id, names, locations, times, dates))
         .then(data => res.json(data))
         .catch(err => res.json(err));
 });
