@@ -40,8 +40,9 @@ router.post('/participate', (req, res) => {
 // Route for verifying whether the given user is a participant of the event or not
 router.post('/verification', (req, res) => {
     let user_id = req.decoded._id;
+    let user_email = req.decoded.email;
     let event_id = req.body.event_id;
-    EventController.verifyParticipantForAnEvent(user_id, event_id).then(data => res.json(data)).catch(err => res.json(err));
+    EventController.verifyParticipantOrCoordinatorForAnEvent(user_id, user_email, event_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
 module.exports = router;
