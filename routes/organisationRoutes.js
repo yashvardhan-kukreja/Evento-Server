@@ -28,6 +28,7 @@ router.post('/host-event', (req, res) => {
     let organisation_id = req.decoded._id;
     let name = req.body.event_name;
     let event_session_names = req.body.event_session_names;
+    let coordinator_emails = req.body.coordinator_emails;
     let start_date = req.body.start_date;
     let end_date = req.body.end_date;
     let location = req.body.event_location;
@@ -35,7 +36,7 @@ router.post('/host-event', (req, res) => {
     let point_of_contacts = req.body.point_of_contacts;
     let about = req.body.about;
     let faqs = req.body.faqs;
-    OrganisationController.hostAnEvent(name, event_session_names, start_date, end_date, location, organisation_id, reg_fees, about, point_of_contacts, faqs).then(data => res.json(data)).catch(err => res.json(err));
+    OrganisationController.hostAnEvent(name, event_session_names, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, point_of_contacts, faqs).then(data => res.json(data)).catch(err => res.json(err));
 });
 
 // Route for deleting an event
@@ -105,6 +106,29 @@ router.post('/event/add-pocs', (req, res) => {
     let event_id = req.body.event_id;
     OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
         .then(ifAuthorized => OrganisationController.addPointOfContacts(event_id, names, contacts, emails))
+        .then(data => res.json(data))
+        .catch(err => res.json(err));
+});
+
+// Route for adding Coordinators to an event
+router.post('/event/add-coordinators', (req, res) => {
+    let organisation_id = req.decoded._id;
+    let coordinator_emails = req.body.coordinator_emails || req.body.coordinator_email;
+    let event_id = req.body.event_id;
+    OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
+        .then(ifAuthorized => OrganisationController.addCoordinators(event_id, coordinator_emails))
+        .then(data => res.json(data))
+        .catch(err => res.json(err));
+});
+
+// Route for adding sessions to an event
+router.post('/event/add-sessions', (req, res) => {
+    let organisation_id = req.decoded._id;
+    let event_id = req.body.event_id;
+    let names = req.body.names || req.body.name;
+    let times = req.body.times || req.body.time;
+    OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
+        .then(ifAuthorized => OrganisationController.addSessions(event_id, names, times))
         .then(data => res.json(data))
         .catch(err => res.json(err));
 });
