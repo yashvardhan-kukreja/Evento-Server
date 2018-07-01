@@ -16,6 +16,9 @@ var eventSchema = new mongoose.Schema({
             name: {
                 type: String
             },
+            location: {
+                type: String
+            },
             time: {
                 type: String,
                 uppercase: true
