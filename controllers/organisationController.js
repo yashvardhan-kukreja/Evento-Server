@@ -5,6 +5,7 @@
 const Promise = require('bluebird');
 const OrganisationTransactions = require('../database/organisations/organisationTransactions');
 const EventTransactions = require('../database/events/eventTransactions');
+const Middlewares = require('../middlewares');
 
 // Controller for fetching organisation details
 module.exports.fetchOrganisationDetails = (id) => {
@@ -25,9 +26,9 @@ module.exports.fetchOrganisationDetails = (id) => {
 };
 
 // Controller for hosting an event
-module.exports.hostAnEvent = (name, event_session_names, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs) => {
+module.exports.hostAnEvent = (name, event_session_names, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs) => {
     return new Promise((resolve, reject) => {
-        EventTransactions.addAnEvent(name, event_session_names, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, (err) => {
+        EventTransactions.addAnEvent(name, event_session_names, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, (err) => {
             if (err) {
                 console.log(err);
                 reject({success: false, message: "An error occurred"});
@@ -163,6 +164,63 @@ module.exports.modifyAboutOfTheEvent = (event_id, about) => {
             } else
                 resolve({success: true, message: "Modified the 'about' of the event"});
         });
+    });
+};
+
+// Controller for adding one or more coordinators to an event
+module.exports.addCoordinators = (event_id, coordinator_emails) => {
+    return new Promise((resolve, reject) => {
+        if (typeof(coordinator_emails) === 'string') {
+            EventTransactions.addASingleCoordinator(event_id, coordinator_emails, (err) => {
+                if (err) {
+                    console.log(err);
+                    reject({success: false, message: "An error occurred"});
+                } else
+                    resolve({success: true, message: "Coordinator added to the event"});
+            });
+        } else {
+            EventTransactions.addCoordinators(event_id, coordinator_emails, (err) => {
+                if (err) {
+                    console.log(err);
+                    reject({success: false, message: "An error occurred"});
+                } else
+                    resolve({success: true, message: "Coordinators added to the event"});
+            });
+        }
+    });
+};
+
+// Controller for adding one or more Sessions to an event
+module.exports.addSessions = (event_id, names, times) => {
+    return new Promise((resolve, reject) => {
+        if (typeof(names) === 'string') {
+            EventTransactions.addASingleSession(event_id, names, times, (err) => {
+                if (err) {
+                    console.log(err);
+                    reject({success: false, message: "An error occurred"});
+                } else
+                    resolve({success: true, message: "Added a session to the event"});
+            });
+        } else {
+            let sessions = [];
+            for (let i=0;i<names.length;i++) {
+                let sessionId = Middlewares.convertAStringToNumber(names[i]);
+                sessions.push({
+                    name: names[i],
+                    time: times[i],
+                    sessionId: sessionId
+                });
+            }
+            setTimeout(() => {
+                EventTransactions.addSessions(event_id, sessions, (err) => {
+                    if (err) {
+                        console.log(err);
+                        reject({success: false, message: "An error occurred"});
+                    } else
+                        resolve({success: true, message: "Added sessions to the event"});
+                });
+            }, 300);
+        }
     });
 };
 
