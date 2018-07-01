@@ -34,8 +34,8 @@ module.exports.listOfParticipantsForEvent = (event_id) => {
     });
 };
 
-// Controller for verifying whether a user is the participant of the given event or not
-module.exports.verifyParticipantForAnEvent = (user_id, event_id) => {
+// Controller for verifying whether a user is the participant or coordinator of the given event or not
+module.exports.verifyParticipantOrCoordinatorForAnEvent = (user_id, user_email, event_id) => {
     return new Promise((resolve, reject) => {
         EventTransactions.findParticipantIdsOfAnEvent(event_id, (err, output) => {
             console.log(output);
@@ -47,7 +47,27 @@ module.exports.verifyParticipantForAnEvent = (user_id, event_id) => {
                     reject({success: false, message: "No participants of the event found"});
                 else {
                     let participantIds = output.participants;
-                    (participantIds.indexOf(user_id) >= 0) ? resolve({success: true, message: "User registered to the event"}) : reject({success: false, message: "User not registered to the event"});
+                    if (participantIds.indexOf(user_id) >= 0) {
+                        resolve({success: true, message: "User registered to the event", is_coordinator: false});
+                    } else {
+                        EventTransactions.findCoordinatorEmailsOfAnEvent(event_id, (err, output1) => {
+                            if (err) {
+                                console.log(err);
+                                reject({success: false, message: "An error occurred"});
+                            } else {
+                                if (!output1)
+                                    reject({success: false, message: "No coordinators found for this event"});
+                                else {
+                                    let coordinatorEmails = output1.coordinatorEmails;
+                                    if (coordinatorEmails.indexOf(user_email) >= 0) {
+                                        resolve({success: true, message: "Coordinator registered to the event", is_coordinator: true})
+                                    } else {
+                                        reject({success: false, message: "User not registered to the event"});
+                                    }
+                                }
+                            }
+                        });
+                    }
                 }
             }
         });
