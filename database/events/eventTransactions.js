@@ -13,14 +13,15 @@ module.exports.findEventByEventId = (event_id, next) => {
     Event.findOne({eventId: event_id}, {participants: 0}).populate({path: 'hostingOrganisation', model: 'Organisation'}).exec(next);
 };
 
-module.exports.addAnEvent = (name, event_session_names, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, next) => {
+module.exports.addAnEvent = (name, event_session_names, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, next) => {
 
     let eventSessions = [];
 
     for (let i=0; i<event_session_names.length;i++) {
+        let currentSessionId = Middlewares.convertAStringToNumber(event_session_names[i]);
         eventSessions.push({
             name: event_session_names[i],
-            sessionId: Middlewares.convertAStringToNumber(event_session_names[i])
+            sessionId: currentSessionId
         });
     }
 
@@ -32,6 +33,7 @@ module.exports.addAnEvent = (name, event_session_names, start_date, end_date, lo
             eventStartDate: start_date,
             eventEndDate: end_date,
             eventLocation: location,
+            coordinatorEmails: coordinator_emails,
             hostingOrganisation: organisation_id,
             fees: reg_fees,
             pointOfContacts: pointOfContacts,
@@ -49,6 +51,10 @@ module.exports.findParticipantsOfAnEvent = (event_id, next) => {
 
 module.exports.findParticipantIdsOfAnEvent = (event_id, next) => {
     Event.findOne({eventId: event_id}, 'participants').exec(next);
+};
+
+module.exports.findCoordinatorEmailsOfAnEvent = (event_id, next) => {
+    Event.findOne({eventId: event_id}, 'coordinatorEmails').exec(next);
 };
 
 module.exports.deleteEventByEventName = (event_name, next) => {
@@ -79,6 +85,14 @@ module.exports.addASingleFAQ = (event_id, question, answer, next) => {
     Event.findOneAndUpdate({eventId: event_id}, {$push: {faqs: faq}}).exec(next);
 };
 
+module.exports.addASingleCoordinator = (event_id, coordinator_email, next) => {
+    Event.findOneAndUpdate({eventId: event_id}, {$addToSet:{coordinatorEmails: coordinator_email}}).exec(next);
+};
+
+module.exports.addCoordinators = (event_id, coordinator_emails, next) => {
+    Event.findOneAndUpdate({eventId: event_id}, {$addToSet:{coordinatorEmails: {$each: coordinator_emails}}}).exec(next);
+};
+
 module.exports.fetchFaqs = (event_id, next) => {
     Event.findOne({eventId: event_id}, 'faqs').exec(next);
 };
@@ -94,6 +108,20 @@ module.exports.addASingleSpeaker = (event_id, name, description, img_url, next) 
 
 module.exports.addSpeakers = (event_id, speakers, next) => {
     Event.findOneAndUpdate({eventId: event_id}, {$push: {speakers: {$each: speakers}}}).exec(next);
+};
+
+module.exports.addASingleSession = (event_id, session_name, session_time, next) => {
+    let sessionId = Middlewares.convertAStringToNumber(session_name);
+    let session = {
+        name: session_name,
+        time: session_time,
+        sessionId: sessionId
+    };
+    Event.findOneAndUpdate({eventId: event_id}, {$push: {eventSessions: session}}).exec(next);
+};
+
+module.exports.addSessions = (event_id, sessions, next) => {
+    Event.findOneAndUpdate({eventId: event_id}, {$push: {eventSessions: {$each: sessions}}}).exec(next);
 };
 
 module.exports.addASingleRegFeesTotheEvent = (event_id, amount, description, next) => {
