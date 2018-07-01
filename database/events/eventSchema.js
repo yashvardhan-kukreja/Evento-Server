@@ -13,8 +13,22 @@ var eventSchema = new mongoose.Schema({
     },
     eventSessions: [
         {
-            name: String,
-            sessionId: Number // This will be the sum of the ASCII values of all the characters in the name
+            name: {
+                type: String
+            },
+            time: {
+                type: String,
+                uppercase: true
+            }, // In the form of 11AM (example)
+            sessionId: {
+                type: Number
+            } // This will be the sum of the ASCII values of all the characters in the name
+        }
+    ],
+    coordinatorEmails: [
+        {
+            type: String,
+            lowercase: true
         }
     ],
     eventStartDate: {
