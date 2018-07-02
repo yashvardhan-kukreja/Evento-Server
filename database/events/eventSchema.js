@@ -12,7 +12,7 @@ var eventSchema = new mongoose.Schema({
         type: String
     },
     eventSessions: [
-        {
+        /*{
             name: {
                 type: String
             },
@@ -33,6 +33,10 @@ var eventSchema = new mongoose.Schema({
             sessionId: {
                 type: Number
             } // This will be the sum of the ASCII values of all the characters in the name
+        }*/
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Session'
         }
     ],
     coordinatorEmails: [
@@ -96,7 +100,13 @@ var eventSchema = new mongoose.Schema({
             },
             description: {
                 type: String
-            }
+            },
+            legitParticipants: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'User'
+                }
+            ]
         }
     ],
     about: {

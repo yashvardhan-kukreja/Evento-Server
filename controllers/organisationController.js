@@ -5,6 +5,7 @@
 const Promise = require('bluebird');
 const OrganisationTransactions = require('../database/organisations/organisationTransactions');
 const EventTransactions = require('../database/events/eventTransactions');
+const SessionTransactions = require('../database/sessions/sessionTransactions');
 const Middlewares = require('../middlewares');
 
 // Controller for fetching organisation details
@@ -191,31 +192,43 @@ module.exports.addCoordinators = (event_id, coordinator_emails) => {
 };
 
 // Controller for adding one or more Sessions to an event
-module.exports.addSessions = (event_id, names, locations, start_times, end_times, dates) => {
+module.exports.addSessions = (event_obj_id, names, locations, start_times, end_times, dates, types) => {
     return new Promise((resolve, reject) => {
         if (typeof(names) === 'string') {
-            EventTransactions.addASingleSession(event_id, names, locations, dates, start_times, end_times, (err) => {
+            SessionTransactions.addASingleSession(event_obj_id, names, locations, dates, start_times, end_times, types, (err, savedSession) => {
+                if (err) {
+                    console.log(err);
+                    reject({success: false, message: "An error occurred"});
+                } else {
+                    EventTransactions.addASingleSession(event_obj_id, savedSession._id, (err) => {
+                        if (err) {
+                            console.log(err);
+                            reject({success: false, message: "An error occurred"});
+                        } else
+                            resolve({success: true, message: "Added a session to the event"});
+                    });
+                }
+            });
+            /*EventTransactions.addASingleSession(event_id, names, locations, dates, start_times, end_times, (err) => {
                 if (err) {
                     console.log(err);
                     reject({success: false, message: "An error occurred"});
                 } else
                     resolve({success: true, message: "Added a session to the event"});
-            });
+            });*/
         } else {
-            let sessions = [];
+            let sessions_saved = [];
             for (let i=0;i<names.length;i++) {
-                let sessionId = Middlewares.convertAStringToNumber(names[i] + start_times[i] + end_times[i] + locations[i] + dates[i]);
-                sessions.push({
-                    name: names[i],
-                    date: dates[i],
-                    startTime: start_times[i],
-                    endTime: end_times[i],
-                    location: locations[i],
-                    sessionId: sessionId
+                SessionTransactions.addASingleSession(event_obj_id, names, locations, dates, start_times, end_times, types, (err, savedSession) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        sessions_saved.push(savedSession._id);
+                    }
                 });
             }
             setTimeout(() => {
-                EventTransactions.addSessions(event_id, sessions, (err) => {
+                EventTransactions.addSessions(event_obj_id, sessions_saved, (err) => {
                     if (err) {
                         console.log(err);
                         reject({success: false, message: "An error occurred"});

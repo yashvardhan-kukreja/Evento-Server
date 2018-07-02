@@ -110,22 +110,16 @@ module.exports.addSpeakers = (event_id, speakers, next) => {
     Event.findOneAndUpdate({eventId: event_id}, {$push: {speakers: {$each: speakers}}}).exec(next);
 };
 
-module.exports.addASingleSession = (event_id, session_name, session_location, session_date, session_start_time, session_end_time, next) => {
-    let sessionId = Middlewares.convertAStringToNumber(session_name + session_start_time + session_end_time + session_location + session_date);
-    let session = {
-        name: session_name,
-        date: session_date,
-        startTime: session_start_time,
-        endTime: session_end_time,
-        location: session_location,
-        sessionId: sessionId
-    };
-    Event.findOneAndUpdate({eventId: event_id}, {$push: {eventSessions: session}}).exec(next);
+
+module.exports.addASingleSession = (event_ob_id, session_ob_id, next) => {
+    Event.findOneAndUpdate({eventId: event_ob_id}, {$push: {eventSessions: session_ob_id}}).exec(next);
 };
 
-module.exports.addSessions = (event_id, sessions, next) => {
-    Event.findOneAndUpdate({eventId: event_id}, {$push: {eventSessions: {$each: sessions}}}).exec(next);
+
+module.exports.addSessions = (event_ob_id, session_ob_ids, next) => {
+    Event.findOneAndUpdate({eventId: event_ob_id}, {$push: {eventSessions: {$each: session_ob_ids}}}).exec(next);
 };
+
 
 module.exports.addASingleRegFeesTotheEvent = (event_id, amount, description, next) => {
     let fees = {
