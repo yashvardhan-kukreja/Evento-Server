@@ -27,9 +27,10 @@ module.exports.fetchOrganisationDetails = (id) => {
 };
 
 // Controller for hosting an event
-module.exports.hostAnEvent = (name, event_session_names, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs) => {
+// Here, session will be hosted via a separate route
+module.exports.hostAnEvent = (name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs) => {
     return new Promise((resolve, reject) => {
-        EventTransactions.addAnEvent(name, event_session_names, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, (err) => {
+        EventTransactions.addAnEvent(name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, (err) => {
             if (err) {
                 console.log(err);
                 reject({success: false, message: "An error occurred"});
@@ -194,28 +195,14 @@ module.exports.addCoordinators = (event_id, coordinator_emails) => {
 // Controller for adding one or more Sessions to an event
 module.exports.addSessions = (event_obj_id, names, locations, start_times, end_times, dates, types) => {
     return new Promise((resolve, reject) => {
-        if (typeof(names) === 'string') {
-            SessionTransactions.addASingleSession(event_obj_id, names, locations, dates, start_times, end_times, types, (err, savedSession) => {
-                if (err) {
-                    console.log(err);
-                    reject({success: false, message: "An error occurred"});
-                } else {
-                    EventTransactions.addASingleSession(event_obj_id, savedSession._id, (err) => {
-                        if (err) {
-                            console.log(err);
-                            reject({success: false, message: "An error occurred"});
-                        } else
-                            resolve({success: true, message: "Added a session to the event"});
-                    });
-                }
-            });
-            /*EventTransactions.addASingleSession(event_id, names, locations, dates, start_times, end_times, (err) => {
+        /*if (typeof(names) === 'string') {
+            EventTransactions.addASingleSession(event_id, names, locations, dates, start_times, end_times, (err) => {
                 if (err) {
                     console.log(err);
                     reject({success: false, message: "An error occurred"});
                 } else
                     resolve({success: true, message: "Added a session to the event"});
-            });*/
+            });
         } else {
             let sessions_saved = [];
             for (let i=0;i<names.length;i++) {
@@ -236,7 +223,21 @@ module.exports.addSessions = (event_obj_id, names, locations, start_times, end_t
                         resolve({success: true, message: "Added sessions to the event"});
                 });
             }, 300);
-        }
+        }*/
+        SessionTransactions.addASingleSession(event_obj_id, names, locations, dates, start_times, end_times, types, (err, savedSession) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                EventTransactions.addASingleSession(event_obj_id, savedSession._id, (err) => {
+                    if (err) {
+                        console.log(err);
+                        reject({success: false, message: "An error occurred"});
+                    } else
+                        resolve({success: true, message: "Added a session to the event"});
+                });
+            }
+        });
     });
 };
 

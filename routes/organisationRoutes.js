@@ -121,8 +121,8 @@ router.post('/event/add-coordinators', (req, res) => {
         .catch(err => res.json(err));
 });
 
-// Route for adding sessions to an event
-router.post('/event/add-sessions', (req, res) => {
+// Route for adding a single session to an event
+router.post('/event/add-single-session', (req, res) => {
     let organisation_id = req.decoded._id;
     let event_id = req.body.event_id;
     let names = req.body.names || req.body.name;

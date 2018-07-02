@@ -3,7 +3,6 @@
  */
 
 const Event = require('./eventSchema');
-const Middlewares = require('../../middlewares');
 
 module.exports.findEventByEventName = (event_name, next) => {
     Event.findOne({eventName: event_name}, {participants: 0}).populate({path: 'hostingOrganisation', model: 'Organisation'}).exec(next);
@@ -13,35 +12,22 @@ module.exports.findEventByEventId = (event_id, next) => {
     Event.findOne({eventId: event_id}, {participants: 0}).populate({path: 'hostingOrganisation', model: 'Organisation'}).exec(next);
 };
 
-module.exports.addAnEvent = (name, event_session_names, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, next) => {
+module.exports.addAnEvent = (name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, next) => {
 
-    let eventSessions = [];
-
-    for (let i=0; i<event_session_names.length;i++) {
-        let currentSessionId = Middlewares.convertAStringToNumber(event_session_names[i]);
-        eventSessions.push({
-            name: event_session_names[i],
-            sessionId: currentSessionId
-        });
-    }
-
-    setTimeout(()=> {
-        let newEvent = new Event({
-            eventName: name,
-            eventSessions: eventSessions,
-            eventId: name.toLowerCase().replace(" ", "_"),
-            eventStartDate: start_date,
-            eventEndDate: end_date,
-            eventLocation: location,
-            coordinatorEmails: coordinator_emails,
-            hostingOrganisation: organisation_id,
-            fees: reg_fees,
-            pointOfContacts: pointOfContacts,
-            faqs: faqs,
-            about: about
-        });
-        newEvent.save(next);
-    }, 100);
+    let newEvent = new Event({
+        eventName: name,
+        eventId: name.toLowerCase().replace(" ", "_"),
+        eventStartDate: start_date,
+        eventEndDate: end_date,
+        eventLocation: location,
+        coordinatorEmails: coordinator_emails,
+        hostingOrganisation: organisation_id,
+        fees: reg_fees,
+        pointOfContacts: pointOfContacts,
+        faqs: faqs,
+        about: about
+    });
+    newEvent.save(next);
 
 };
 
@@ -66,7 +52,7 @@ module.exports.deleteEventByEventId = (event_id, next) => {
 };
 
 module.exports.addUserToAnEvent = (event_id, user_id, next) => {
-    Event.findOneAndUpdate({eventId: event_id}, {$push: {participants: user_id}}).exec(next);
+    Event.findOneAndUpdate({eventId: event_id}, {$addToSet: {participants: user_id}}).exec(next);
 };
 
 module.exports.fetchParticipatedEvents = (user_id, next) => {
