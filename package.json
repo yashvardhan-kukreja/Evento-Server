@@ -23,10 +23,10 @@
     "type": "git",
     "url": "git+https://github.com/Yashvardhan-Kukreja/Evento-Server.git"
   },
-  "author": "",
+  "author": "yashvardhan-kukreja",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Yashvardhan-Kukreja/Evento-Server/issues"
+    "url": "https://github.com/yashvardhan-kukreja/Evento-Server/issues"
   },
-  "homepage": "https://github.com/Yashvardhan-Kukreja/Evento-Server#readme"
+  "homepage": "https://github.com/yashvardhan-kukreja/Evento-Server#readme"
 }
