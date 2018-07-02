@@ -5,11 +5,11 @@
 const Event = require('./eventSchema');
 
 module.exports.findEventByEventName = (event_name, next) => {
-    Event.findOne({eventName: event_name}, {participants: 0}).populate({path: 'hostingOrganisation', model: 'Organisation'}).exec(next);
+    Event.findOne({eventName: event_name}, {participants: 0}).populate([{path: 'hostingOrganisation', model: 'Organisation'}, {path: 'eventSessions', model: 'Session'}]).exec(next);
 };
 
 module.exports.findEventByEventId = (event_id, next) => {
-    Event.findOne({eventId: event_id}, {participants: 0}).populate({path: 'hostingOrganisation', model: 'Organisation'}).exec(next);
+    Event.findOne({eventId: event_id}, {participants: 0}).populate([{path: 'hostingOrganisation', model: 'Organisation'}, {path: 'eventSessions', model: 'Session'}]).exec(next);
 };
 
 module.exports.addAnEvent = (name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, next) => {
