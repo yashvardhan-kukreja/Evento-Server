@@ -41,11 +41,16 @@ module.exports.generateToken = (user, secret) => {
     return jwt.sign(JSON.parse(JSON.stringify(user)), secret);
 };
 
+// Function for decoding a jwt
+module.exports.decodeToken = (token, secret, next) => {
+    jwt.verify(token, secret, next);
+};
+
 // Function for verifying a token corresponding to a user
 module.exports.verifyUserToken = (secret, req, res, next) => {
     const token = req.body.token || req.headers['x-access-token'];
     if (token) {
-        jwt.verify(token, secret, (err, decoded) => {
+        this.decodeToken(token, secret, (err, decoded) => {
             if (err) {
                 console.log(err);
                 return res.json({success: false, message: "An error occurred"});
