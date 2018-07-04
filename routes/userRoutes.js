@@ -45,4 +45,21 @@ router.post('/verification', (req, res) => {
     EventController.verifyParticipantOrCoordinatorForAnEvent(user_id, user_email, event_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
+/**
+ * Routes involving coordinator verification
+ */
+
+// Route for marking a participant as present
+router.post('/coordinator/mark-attendance', (req, res) => {
+    let coordinator_email_id = req.decoded.email;
+    let session_id = req.body.session_id;
+    let qr_code = req.body.qr_code;
+    let participant_token = qr_code.split(" ")[0];
+    let event_id = qr_code.split(" ")[1];
+    UserController.verifyCoordinator(event_id, coordinator_email_id)
+        .then(ifAuthorized => UserController.scanQrAndMarkPresent(session_id, participant_token, secret))
+        .then(data => res.json(data))
+        .catch(err => res.json(err));
+});
+
 module.exports = router;
