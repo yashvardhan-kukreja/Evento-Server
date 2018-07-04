@@ -17,9 +17,16 @@ module.exports.addASingleSession = (event_ob_id, session_name, session_location,
         eventId: event_ob_id
     });
     session.save(next);
-    //Event.findOneAndUpdate({eventId: event_id}, {$push: {eventSessions: session}}).exec(next);
 };
 
 module.exports.addSessions = (event_id, sessions, next) => {
     Event.findOneAndUpdate({eventId: event_id}, {$push: {eventSessions: {$each: sessions}}}).exec(next);
+};
+
+module.exports.findSessionBySessionObjId = (session_id, next) => {
+    Session.findOne({_id: session_id}).exec(next);
+};
+
+module.exports.addAParticipantToASession = (session_id, participant_id, next) => {
+    Session.findOneAndUpdate({_id: session_id}, {$push: {participantsPresent: participant_id}}).exec(next);
 };
