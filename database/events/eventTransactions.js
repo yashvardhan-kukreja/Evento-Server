@@ -56,7 +56,7 @@ module.exports.addUserToAnEvent = (event_id, user_id, next) => {
 };
 
 module.exports.fetchParticipatedEvents = (user_id, next) => {
-    Event.find({participants: user_id}, {participants: 0}).populate({path: 'hostingOrganisation', model: 'Organisation'}).exec(next);
+    Event.find({participants: user_id}, {participants: 0}).populate([{path: 'hostingOrganisation', model: 'Organisation'}, {path: 'eventSessions', model: 'Session', select: '-_id -sessionId'}]).exec(next);
 };
 
 module.exports.addFaqs = (event_id, faqs, next) => {
