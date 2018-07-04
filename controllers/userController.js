@@ -5,6 +5,7 @@
 const Promise = require('bluebird');
 const UserTransactions = require('../database/users/userTransactions');
 const EventTransactions = require('../database/events/eventTransactions');
+const SessionTransactions = require('../database/sessions/sessionTransactions');
 
 // Route for fetching a user's details
 module.exports.fetchUserDetails = (id) => {
@@ -81,6 +82,58 @@ module.exports.registerToAnEvent = (user_id, event_id) => {
                                         }
                                     });
                                 }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+};
+
+// Controller for verifying whether a user is a coordinator for the event or not
+module.exports.verifyCoordinator = (event_id, user_email_id) => {
+    return new Promise((resolve, reject) => {
+        EventTransactions.findCoordinatorEmailsOfAnEvent(event_id, (err, output) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                let coordinator_emails = output.coordinatorEmails;
+                (coordinator_emails.indexOf(user_email_id) >= 0) ? resolve({success: true, message: "Is a coordinator"}) : reject({success: false, message: "Not a coordinator"});
+            }
+        });
+    });
+};
+
+// Controller for marking a participant as present in an event's session
+module.exports.scanQrAndMarkPresent = (session_id, participant_token, secret) => {
+    return new Promise((resolve, reject) => {
+        SessionTransactions.findSessionBySessionObjId(session_id, (err, outputSession) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                if (!outputSession) {
+                    reject({success: false, message: "No session exists"});
+                } else {
+                    let participants_obj_ids = outputSession.participantsPresent;
+                    UserTransactions.decodeToken(participant_token, secret, (err, decoded) => {
+                        if (err) {
+                            console.log(err);
+                            reject({success: false, message: "An error occurred"});
+                        } else {
+                            let participant_id = decoded._id;
+                            if (participants_obj_ids.indexOf(participant_id) >= 0) {
+                                reject({success: false, message: "Already marked present"});
+                            } else {
+                                SessionTransactions.addAParticipantToASession(session_id, participant_id, (err) => {
+                                    if (err) {
+                                        console.log(err);
+                                        reject({success: false, message: "An error occurred while marking as present"});
+                                    } else
+                                        resolve({success: true, message: "Participant marked present"});
+                                });
                             }
                         }
                     });
