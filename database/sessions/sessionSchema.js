@@ -6,10 +6,12 @@ const mongoose = require('mongoose');
 
 let sessionSchema = new mongoose.Schema({
     name: {
-        type: String
+        type: String,
+        required: true
     },
     location: {
-        type: String
+        type: String,
+        require: true
     },
     date: {
         type: String
@@ -30,10 +32,12 @@ let sessionSchema = new mongoose.Schema({
     sessionId: {
         type: Number
     }, // This will be the sum of the ASCII values of all the characters in the name
-    participantsPresent: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    },
+    participantsPresent: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
     eventId: {
         type: String
     }
