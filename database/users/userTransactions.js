@@ -3,6 +3,7 @@
  */
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
+const aes256 = require('aes256');
 
 const User = require('./userSchema');
 
@@ -44,6 +45,16 @@ module.exports.generateToken = (user, secret) => {
 // Function for decoding a jwt
 module.exports.decodeToken = (token, secret, next) => {
     jwt.verify(token, secret, next);
+};
+
+// Function for encrypting the user_id and event_id using AES
+module.exports.encryptUserAndEventIdAES = (secret, user_id, event_id) => {
+    return aes256.encrypt(secret, user_id+" "+event_id);
+};
+
+// Function for decrypting the user_id and event_id using AES
+module.exports.decryptUserAndEventIdAES = (secret, encrypted_form) => {
+    return aes256.decrypt(secret, encrypted_form);
 };
 
 // Function for verifying a token corresponding to a user
