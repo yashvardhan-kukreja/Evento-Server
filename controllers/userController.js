@@ -107,7 +107,7 @@ module.exports.verifyCoordinator = (event_id, user_email_id) => {
 };
 
 // Controller for marking a participant as present in an event's session
-module.exports.scanQrAndMarkPresent = (session_id, participant_token, secret) => {
+module.exports.scanQrAndMarkPresent = (session_id, participant_id) => {
     return new Promise((resolve, reject) => {
         SessionTransactions.findSessionBySessionObjId(session_id, (err, outputSession) => {
             if (err) {
@@ -118,25 +118,17 @@ module.exports.scanQrAndMarkPresent = (session_id, participant_token, secret) =>
                     reject({success: false, message: "No session exists"});
                 } else {
                     let participants_obj_ids = outputSession.participantsPresent;
-                    UserTransactions.decodeToken(participant_token, secret, (err, decoded) => {
-                        if (err) {
-                            console.log(err);
-                            reject({success: false, message: "An error occurred"});
-                        } else {
-                            let participant_id = decoded._id;
-                            if (participants_obj_ids.indexOf(participant_id) >= 0) {
-                                reject({success: false, message: "Already marked present"});
-                            } else {
-                                SessionTransactions.addAParticipantToASession(session_id, participant_id, (err) => {
-                                    if (err) {
-                                        console.log(err);
-                                        reject({success: false, message: "An error occurred while marking as present"});
-                                    } else
-                                        resolve({success: true, message: "Participant marked present"});
-                                });
-                            }
-                        }
-                    });
+                    if (participants_obj_ids.indexOf(participant_id) >= 0) {
+                        reject({success: false, message: "Already marked present"});
+                    } else {
+                        SessionTransactions.addAParticipantToASession(session_id, participant_id, (err) => {
+                            if (err) {
+                                console.log(err);
+                                reject({success: false, message: "An error occurred while marking as present"});
+                            } else
+                                resolve({success: true, message: "Participant marked present"});
+                        });
+                    }
                 }
             }
         });
