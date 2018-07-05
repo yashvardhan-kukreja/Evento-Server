@@ -96,16 +96,13 @@ module.exports.addSpeakers = (event_id, speakers, next) => {
     Event.findOneAndUpdate({eventId: event_id}, {$push: {speakers: {$each: speakers}}}).exec(next);
 };
 
-
 module.exports.addASingleSession = (event_ob_id, session_ob_id, next) => {
     Event.findOneAndUpdate({eventId: event_ob_id}, {$push: {eventSessions: session_ob_id}}).exec(next);
 };
 
-
 module.exports.addSessions = (event_ob_id, session_ob_ids, next) => {
     Event.findOneAndUpdate({eventId: event_ob_id}, {$push: {eventSessions: {$each: session_ob_ids}}}).exec(next);
 };
-
 
 module.exports.addASingleRegFeesTotheEvent = (event_id, amount, description, next) => {
     let fees = {
