@@ -1,6 +1,7 @@
 /**
  * Created by Yash 1300 on 21-03-2018.
  */
+
 const mongoose = require('mongoose');
 
 var eventSchema = new mongoose.Schema({
@@ -12,28 +13,6 @@ var eventSchema = new mongoose.Schema({
         type: String
     },
     eventSessions: [
-        /*{
-            name: {
-                type: String
-            },
-            location: {
-                type: String
-            },
-            date: {
-                type: String
-            }, // in the form of dd-mm-yyyy
-            startTime: {
-                type: String,
-                uppercase: true
-            }, // In the form of 11AM (example)
-            endTime: {
-                type: String,
-                uppercase: true
-            },
-            sessionId: {
-                type: Number
-            } // This will be the sum of the ASCII values of all the characters in the name
-        }*/
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Session'
