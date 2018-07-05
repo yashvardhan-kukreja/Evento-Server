@@ -5,6 +5,7 @@
 const Promise = require('bluebird');
 
 const EventTransactions = require('../database/events/eventTransactions');
+const UserTransactions = require('../database/users/userTransactions');
 
 // Controller for fetching the event details
 module.exports.fetchEventDetails = (event_id) => {
@@ -35,7 +36,7 @@ module.exports.listOfParticipantsForEvent = (event_id) => {
 };
 
 // Controller for verifying whether a user is the participant or coordinator of the given event or not
-module.exports.verifyParticipantOrCoordinatorForAnEvent = (user_id, user_email, event_id) => {
+module.exports.verifyParticipantOrCoordinatorForAnEvent = (user_id, user_email, event_id, secret) => {
     return new Promise((resolve, reject) => {
         EventTransactions.findParticipantIdsOfAnEvent(event_id, (err, output) => {
             console.log(output);
@@ -48,7 +49,8 @@ module.exports.verifyParticipantOrCoordinatorForAnEvent = (user_id, user_email, 
                 else {
                     let participantIds = output.participants;
                     if (participantIds.indexOf(user_id) >= 0) {
-                        resolve({success: true, message: "User registered to the event", is_coordinator: false});
+                        let encrypted_id = UserTransactions.encryptUserAndEventIdAES(secret, user_id, event_id);
+                        resolve({success: true, message: "User registered to the event", is_coordinator: false, encrypted_id: encrypted_id});
                     } else {
                         EventTransactions.findCoordinatorEmailsOfAnEvent(event_id, (err, output1) => {
                             if (err) {
