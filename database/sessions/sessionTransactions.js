@@ -30,3 +30,7 @@ module.exports.findSessionBySessionObjId = (session_id, next) => {
 module.exports.addAParticipantToASession = (session_id, participant_id, next) => {
     Session.findOneAndUpdate({_id: session_id}, {$push: {participantsPresent: participant_id}}).exec(next);
 };
+
+module.exports.findParticipantsPresentOfASession = (session_id, next) => {
+    Session.findOne({_id: session_id}, 'participantsPresent').populate({path: 'participantsPresent', model: 'User'}).exec(next);
+};
