@@ -6,6 +6,7 @@ const Promise = require('bluebird');
 
 const EventTransactions = require('../database/events/eventTransactions');
 const UserTransactions = require('../database/users/userTransactions');
+const SessionTransactions = require('../database/sessions/sessionTransactions');
 
 // Controller for fetching the event details
 module.exports.fetchEventDetails = (event_id) => {
@@ -89,6 +90,25 @@ module.exports.fetchFaqs = (event_id) => {
                 else {
                     let faqs = output.faqs;
                     resolve({success: true, message: "Fetched all the FAQs for this event", faqs: faqs});
+                }
+            }
+        });
+    });
+};
+
+// Controller for fetching the participants of a specific session
+module.exports.fetchParticipantsPresentInASession = (session_id) => {
+    return new Promise((resolve, reject) => {
+        SessionTransactions.findParticipantsPresentOfASession(session_id, (err, output) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                if (!output)
+                    reject({success: false, message: "No such session found"});
+                else {
+                    let participantsPresent = output.participantsPresent;
+                    resolve({success: true, message: "Participants present fetched", participants: participantsPresent});
                 }
             }
         });
