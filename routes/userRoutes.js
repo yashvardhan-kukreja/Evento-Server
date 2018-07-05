@@ -42,7 +42,7 @@ router.post('/verification', (req, res) => {
     let user_id = req.decoded._id;
     let user_email = req.decoded.email;
     let event_id = req.body.event_id;
-    EventController.verifyParticipantOrCoordinatorForAnEvent(user_id, user_email, event_id).then(data => res.json(data)).catch(err => res.json(err));
+    EventController.verifyParticipantOrCoordinatorForAnEvent(user_id, user_email, event_id, secret).then(data => res.json(data)).catch(err => res.json(err));
 });
 
 /**
@@ -52,12 +52,14 @@ router.post('/verification', (req, res) => {
 // Route for marking a participant as present
 router.post('/coordinator/mark-attendance', (req, res) => {
     let coordinator_email_id = req.decoded.email;
-    let session_id = req.body.session_id;
+    let session_obj_id = req.body.session_obj_id;
     let qr_code = req.body.qr_code;
-    let participant_token = qr_code.split(" ")[0];
-    let event_id = qr_code.split(" ")[1];
+
+    let decrypted_form = UserTransations.decryptUserAndEventIdAES(secret, qr_code);
+    let participant_id = decrypted_form.split(" ")[0];
+    let event_id = decrypted_form.split(" ")[1];
     UserController.verifyCoordinator(event_id, coordinator_email_id)
-        .then(ifAuthorized => UserController.scanQrAndMarkPresent(session_id, participant_token, secret))
+        .then(ifAuthorized => UserController.scanQrAndMarkPresent(session_obj_id, participant_id))
         .then(data => res.json(data))
         .catch(err => res.json(err));
 });
