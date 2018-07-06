@@ -128,3 +128,7 @@ module.exports.addASinglePointOfContact = (event_id, name, email, contact_number
     };
     Event.findOneAndUpdate({eventId: event_id}, {$push: {pointOfContacts: poc}}).exec(next);
 };
+
+module.exports.findSessionsOfAnEvent = (event_id, next) => {
+    Event.findOne({eventId: event_id}, 'eventSessions').populate({path: 'eventSessions', model: 'Session'}).exec(next);
+};
