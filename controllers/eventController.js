@@ -114,3 +114,21 @@ module.exports.fetchParticipantsPresentInASession = (session_id) => {
         });
     });
 };
+
+module.exports.fetchSessionsOfAnEvent = (event_id) => {
+    return new Promise((resolve, reject) => {
+        EventTransactions.findSessionsOfAnEvent(event_id, (err, output) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                if (!output)
+                    reject({success: false, message: "No such event found"});
+                else {
+                    let sessions = output.eventSessions;
+                    resolve({success: true, message: "Event sessions fetched", sessions: sessions});
+                }
+            }
+        });
+    });
+};
