@@ -29,4 +29,10 @@ router.post('/session/fetch/participants', (req, res) => {
     EventController.fetchParticipantsPresentInASession(session_obj_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
+// Route for fetching the session in an event
+router.post('/fetch/sessions', (req, res) => {
+    let event_id = req.body.event_id;
+    EventController.fetchSessionsOfAnEvent(event_id).then(data => res.json(data)).catch(err => res.json(err));
+});
+
 module.exports = router;
