@@ -28,9 +28,9 @@ module.exports.fetchOrganisationDetails = (id) => {
 
 // Controller for hosting an event
 // Here, session will be hosted via a separate route
-module.exports.hostAnEvent = (name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs) => {
+module.exports.hostAnEvent = (name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, sponsors) => {
     return new Promise((resolve, reject) => {
-        EventTransactions.addAnEvent(name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, (err) => {
+        EventTransactions.addAnEvent(name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, sponsors, (err) => {
             if (err) {
                 console.log(err);
                 reject({success: false, message: "An error occurred"});
@@ -270,6 +270,37 @@ module.exports.addPointOfContacts = (event_id, names, contacts, emails) => {
                         resolve({success: true, message: "Added point of contacts"});
                 });
             }, 300);
+        }
+    });
+};
+
+module.exports.addSponsorsToAnEvent = (event_id, names, img_urls) => {
+    return new Promise((resolve, reject) => {
+        if (typeof(names) === 'string') {
+            EventTransactions.addASingleSponsor(event_id, names, img_urls, (err) => {
+                if (err) {
+                    console.log(err);
+                    reject({success: false, message: "An error occurred"});
+                } else
+                    resolve({success: true, message: "Sponsor added successfully"});
+            });
+        } else {
+            let sponsors = [];
+            for (let i=0; i<names.length; i++) {
+                sponsors.push({
+                    name: names[i],
+                    img_url: img_urls[i]
+                });
+            }
+            setTimeout(() => {
+                EventTransactions.addSponsors(event_id, sponsors, (err) => {
+                    if (err) {
+                        console.log(err);
+                        reject({success: false, message: "An error occurred"});
+                    } else
+                        resolve({success: true, message: "Sponsors added successfully"});
+                });
+            }, 200);
         }
     });
 };
