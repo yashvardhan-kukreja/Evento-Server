@@ -132,3 +132,17 @@ module.exports.fetchSessionsOfAnEvent = (event_id) => {
         });
     });
 };
+
+module.exports.fetchSponsorsOfAnEvent = (event_id) => {
+    return new Promise((resolve, reject) => {
+        EventTransactions.findSponsorsOfAnEvent(event_id, (err, output) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                let sponsors = output.sponsors;
+                resolve({success: true, message: "Sponsors fetched successfully", sponsors: sponsors});
+            }
+        });
+    });
+};
