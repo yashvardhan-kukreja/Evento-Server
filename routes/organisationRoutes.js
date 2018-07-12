@@ -35,7 +35,8 @@ router.post('/host-event', (req, res) => {
     let point_of_contacts = req.body.point_of_contacts;
     let about = req.body.about;
     let faqs = req.body.faqs;
-    OrganisationController.hostAnEvent(name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, point_of_contacts, faqs).then(data => res.json(data)).catch(err => res.json(err));
+    let sponsors = req.body.sponsors;
+    OrganisationController.hostAnEvent(name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, point_of_contacts, faqs, sponsors).then(data => res.json(data)).catch(err => res.json(err));
 });
 
 // Route for deleting an event
@@ -132,6 +133,18 @@ router.post('/event/add-single-session', (req, res) => {
     let types = req.body.types || req.body.type;
     OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
         .then(ifAuthorized => OrganisationController.addSessions(event_id, names, locations, start_times, end_times, dates, types))
+        .then(data => res.json(data))
+        .catch(err => res.json(err));
+});
+
+// Route for adding sponsors to an event
+router.post('/event/add-sponsors', (req, res) => {
+    let organisation_id = req.decoded._id;
+    let event_id = req.body.event_id;
+    let names = req.body.names || req.body.name;
+    let img_urls = req.body.img_urls || req.body.img_url;
+    OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
+        .then(ifAuthorized => OrganisationController.addSponsorsToAnEvent(event_id, names, img_urls))
         .then(data => res.json(data))
         .catch(err => res.json(err));
 });
