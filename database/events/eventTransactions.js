@@ -145,3 +145,7 @@ module.exports.addASingleSponsor = (event_id, name, img_url, next) => {
 module.exports.addSponsors = (event_id, sponsors, next) => {
     Event.findOneAndUpdate({eventId: event_id}, {$push: {sponsors: {$each: sponsors}}}).exec(next);
 };
+
+module.exports.findSponsorsOfAnEvent = (event_id, next) => {
+    Event.findOne({eventId: event_id}, 'sponsors').exec(next);
+};
