@@ -35,4 +35,10 @@ router.post('/fetch/sessions', (req, res) => {
     EventController.fetchSessionsOfAnEvent(event_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
+// Route for fetching the sponsors in an event
+router.post('/fetch/sponsors', (req, res) => {
+    let event_id = req.body.event_id;
+    EventController.fetchSponsorsOfAnEvent(event_id).then(data => res.json(data)).catch(err => res.json(err));
+});
+
 module.exports = router;
