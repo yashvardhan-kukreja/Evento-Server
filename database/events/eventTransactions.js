@@ -12,7 +12,7 @@ module.exports.findEventByEventId = (event_id, next) => {
     Event.findOne({eventId: event_id}, {participants: 0}).populate([{path: 'hostingOrganisation', model: 'Organisation'}, {path: 'eventSessions', model: 'Session'}]).exec(next);
 };
 
-module.exports.addAnEvent = (name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, next) => {
+module.exports.addAnEvent = (name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, sponsors, next) => {
 
     let newEvent = new Event({
         eventName: name,
@@ -25,6 +25,7 @@ module.exports.addAnEvent = (name, coordinator_emails, start_date, end_date, loc
         fees: reg_fees,
         pointOfContacts: pointOfContacts,
         faqs: faqs,
+        sponsors: sponsors,
         about: about
     });
     newEvent.save(next);
@@ -131,4 +132,16 @@ module.exports.addASinglePointOfContact = (event_id, name, email, contact_number
 
 module.exports.findSessionsOfAnEvent = (event_id, next) => {
     Event.findOne({eventId: event_id}, 'eventSessions').populate({path: 'eventSessions', model: 'Session'}).exec(next);
+};
+
+module.exports.addASingleSponsor = (event_id, name, img_url, next) => {
+    let sponsor = {
+        name: name,
+        img_url: img_url
+    };
+    Event.findOneAndUpdate({eventId: event_id}, {$push: {sponsors: sponsor}}).exec(next);
+};
+
+module.exports.addSponsors = (event_id, sponsors, next) => {
+    Event.findOneAndUpdate({eventId: event_id}, {$push: {sponsors: {$each: sponsors}}}).exec(next);
 };
