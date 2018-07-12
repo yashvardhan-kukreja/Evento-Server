@@ -72,6 +72,16 @@ var eventSchema = new mongoose.Schema({
             }
         }
     ],
+    sponsors: [
+        {
+            name: {
+                type: String
+            },
+            img_url: {
+                type: String
+            }
+        }
+    ],
     fees: [
         {
             amount: {
