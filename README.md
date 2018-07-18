@@ -6,6 +6,14 @@ API documentation
 
 **=> Base URL:**
    https://ieee-evento.herokuapp.com
+
+**=> Order:**
+    1). Authentication Routes
+    2). User Routes
+    3). Coordinator Routes
+    4). Organisation Routes
+    5). Event Routes
+
    
 **=> Authentication Routes:**
 
@@ -186,7 +194,7 @@ Login to an event (Verifying whether a part of the given event or not)
 }
 ```
 
-**=> User Routes:**
+**=> Coordinator Routes:**
 
 Route for marking a participant as present in a session
 ```
