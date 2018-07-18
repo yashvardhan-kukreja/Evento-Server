@@ -11,7 +11,8 @@ const compression = require('compression');
 
 const authenticationRouter = require('./routes/authenticationRoutes');
 const organisationRouter = require('./routes/organisationRoutes');
-const userRouter = require('./routes/userRoutes');
+const userRouter = require('./routes/userRoutes').user_router;
+const coordinatorRouter = require('./routes/userRoutes').coordinator_router;
 const eventRouter = require('./routes/eventRoutes');
 
 try {
@@ -47,6 +48,7 @@ mongoose.connect(db, (err) => {
         app.use('/authenticate', authenticationRouter);
         app.use('/organisation', organisationRouter);
         app.use('/user', userRouter);
+        app.use('/coordinator', coordinatorRouter);
         app.use('/event', eventRouter);
 
         app.use((req, res, next) => {
