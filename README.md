@@ -8,7 +8,7 @@ API documentation
    https://ieee-evento.herokuapp.com
 
 **=> Order:**
-    </br></br>
+    </br>
     1). Authentication Routes</br>
     2). User Routes</br>
     3). Coordinator Routes</br>
