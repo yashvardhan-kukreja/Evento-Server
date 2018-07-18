@@ -3,6 +3,7 @@
  */
 
 const router = require('express').Router();
+const coord_router = require('express').Router();
 const UserController = require('../controllers/userController');
 const EventController = require('../controllers/eventController');
 const UserTransations = require('../database/users/userTransactions');
@@ -49,8 +50,12 @@ router.post('/verification', (req, res) => {
  * Routes involving coordinator verification
  */
 
+coord_router.use((req, res, next) => {
+    UserTransations.verifyUserToken(secret, req, res, next);
+});
+
 // Route for marking a participant as present
-router.post('/coordinator/mark-attendance', (req, res) => {
+coord_router.post('/mark-attendance', (req, res) => {
     let coordinator_email_id = req.decoded.email;
     let session_obj_id = req.body.session_obj_id;
     let qr_code = req.body.qr_code;
@@ -58,10 +63,14 @@ router.post('/coordinator/mark-attendance', (req, res) => {
     let decrypted_form = UserTransations.decryptUserAndEventIdAES(secret, qr_code);
     let participant_id = decrypted_form.split(" ")[0];
     let event_id = decrypted_form.split(" ")[1];
+
     UserController.verifyCoordinator(event_id, coordinator_email_id)
         .then(ifAuthorized => UserController.scanQrAndMarkPresent(session_obj_id, participant_id))
         .then(data => res.json(data))
         .catch(err => res.json(err));
 });
 
-module.exports = router;
+module.exports = {
+    user_router: router,
+    coordinator_router: coord_router
+};
