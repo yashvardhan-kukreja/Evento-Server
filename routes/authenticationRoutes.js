@@ -29,7 +29,8 @@ router.post('/organisation/register', (req, res) => {
     let email = req.body.email;
     let contact = req.body.contact;
     let password = req.body.password;
-    AuthController.registerOrganisation(name, college, email, contact, password).then(data => res.json(data)).catch((err) => res.json(err));
+    let org_logo_url = req.body.org_logo_url;
+    AuthController.registerOrganisation(name, college, email, contact, password, org_logo_url).then(data => res.json(data)).catch((err) => res.json(err));
 });
 
 // Route for logging in an organisation
