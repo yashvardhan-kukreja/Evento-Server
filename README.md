@@ -184,13 +184,13 @@ Login to an event (Verifying whether a part of the given event or not)
     "is_coordinator": false,
     "encrypted_id": "3N1dym0EYp+pXGTS2AMe8SWnazAF6O+nGCVzksswMH/kuAttC7DSSQ0hW0rDucg9+vcAZ0GoEE3Kjgjhftpv"
 }
-// Here, the "encrypted_id" will stored in the qr code in the app
+// Here, the "encrypted_id" will be stored in the qr code in the app
 ```
 ```js
 - Sample Response if the user is a coordinator of that event
 {
     "success": true,
-    "message": "User registered to the event",
+    "message": "Coordinator registered to the event",
     "is_coordinator": true
 }
 ```
