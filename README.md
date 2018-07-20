@@ -226,8 +226,21 @@ Fetching organisation details
         "college": "VIT University, Vellore",
         "concernedEmail": "ieee@gmail.com",
         "concernedContact": "+919999712426",
+        "orgLogoUrl": "http://ieeevit.com/img/logoplus.png",
         "__v": 0
     }
+}
+```
+
+Adding/Modifying the organisation logo URL
+```
+- POST /organisation/modify-logo: Request Headers ("x-access-token": token) & Request Body (org_logo_url)
+```
+```js
+- Sample Response :
+{
+    "success": true,
+    "message": "Organisation logo updated"
 }
 ```
 
@@ -943,6 +956,7 @@ Fetching the list of participants (with details) for an event
             "email": "yash.kukreja.98@gmail.com",
             "password": "$2a$10$PlVoqkmavvBn/giDwUJnFeiEVfFazneEIU7e2WL.fzngHjUypZo9G",
             "contact": "9999712426",
+            "orgLogoUrl": "http://ieeevit.com/img/logoplus.png",
             "__v": 0
         }
     ]
