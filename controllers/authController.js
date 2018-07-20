@@ -62,7 +62,7 @@ module.exports.loginUser = (email, password) => {
 };
 
 // Function returning a promise for executing the registration of an organisation
-module.exports.registerOrganisation = (name, college, email, contact, password) => {
+module.exports.registerOrganisation = (name, college, email, contact, password, org_logo_url) => {
     return new Promise((resolve, reject) => {
         if (name.trim() === "" || name.trim() === null || college.trim() === "" || college.trim() === null || email.trim() === "" || email.trim() === null || contact.trim() === "" || contact.trim() === null || password.trim() === "" || password.trim() === null) {
             reject({success: false, message: "Please enter all the fields completely"});
@@ -72,7 +72,8 @@ module.exports.registerOrganisation = (name, college, email, contact, password) 
                 college: college,
                 concernedEmail: email,
                 concernedContact: contact,
-                password: password
+                password: password,
+                orgLogoUrl: org_logo_url
             });
             organisationTransactions.addOrganisation(organisation, (err) => {
                 if (err) {

@@ -31,6 +31,9 @@ var organisationSchema = new mongoose.Schema({
     authorized: {
         type: Boolean,
         default: true  // Set default: false in the future
+    },
+    orgLogoUrl: {
+        type: String
     }
 });
 
