@@ -65,3 +65,7 @@ module.exports.verifyOrganisationToken = (secret, req, res, next) => {
         return res.json({success: false, message: "No token provided"});
     }
 };
+
+module.exports.addOrModifyOrganisationLogoURL = (org_id, logo_url, next) => {
+    Organisation.findOneAndUpdate({_id: org_id}, {orgLogoUrl: logo_url}).exec(next);
+};

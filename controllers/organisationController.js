@@ -26,6 +26,23 @@ module.exports.fetchOrganisationDetails = (id) => {
     });
 };
 
+// Controller for adding/modifying organisation's logo url
+module.exports.addOrModifyOrganisationLogoURL = (org_id, logo_url) => {
+    return new Promise((resolve, reject) => {
+        OrganisationTransactions.addOrModifyOrganisationLogoURL(org_id, logo_url, (err, output) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                if (!output)
+                    reject({success: false, message: "No such organisation exists with this id"});
+                else
+                    resolve({success: true, message: "Organisation logo updated"});
+            }
+        });
+    });
+};
+
 // Controller for hosting an event
 // Here, session will be hosted via a separate route
 module.exports.hostAnEvent = (name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, sponsors) => {

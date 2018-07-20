@@ -23,6 +23,13 @@ router.get('/fetch/info', (req, res) => {
     OrganisationController.fetchOrganisationDetails(organisation_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
+// Route for adding/modifying the organisation logo
+router.post('/modify-logo', (req, res) => {
+    let organisation_id = req.decoded._id;
+    let org_logo_url = req.body.org_logo_url;
+    OrganisationController.addOrModifyOrganisationLogoURL(organisation_id, org_logo_url).then(data => res.json(data)).catch(err => res.json(err));
+});
+
 // Route for hosting an event
 router.post('/host-event', (req, res) => {
     let organisation_id = req.decoded._id;
