@@ -70,6 +70,18 @@ coord_router.post('/mark-attendance', (req, res) => {
         .catch(err => res.json(err));
 });
 
+// Route for providing wifi coupon to a participant
+coord_router.post('/allocate-wifi-coupon', (req, res) => {
+    let coordinator_email_id = req.decoded.email;
+    let participant_id = req.body.participant_id;
+    let event_id = req.body.event_id;
+
+    UserController.verifyCoordinator(event_id, coordinator_email_id, participant_id)
+        .then(ifAuthorized => UserController.checkAndAddWifiCoupon(participant_id, event_id))
+        .then(data => res.json(data))
+        .catch(err => res.json(err));
+});
+
 module.exports = {
     user_router: router,
     coordinator_router: coord_router
