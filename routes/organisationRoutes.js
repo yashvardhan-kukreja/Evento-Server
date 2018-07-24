@@ -156,4 +156,26 @@ router.post('/event/add-sponsors', (req, res) => {
         .catch(err => res.json(err));
 });
 
+// Route for adding multiple wifi coupons to an event
+router.post('/event/add-wifi-coupons', (req, res) => {
+    let organisation_id = req.decoded._id;
+    let coupon_ids = "";
+    let coupon_passwords = "";
+
+    if (typeof (req.body.coupon_ids) === 'string') {
+        coupon_ids = [req.body.coupon_ids];
+        coupon_passwords = [req.body.coupon_passwords];
+    } else {
+        coupon_ids = req.body.coupon_ids;
+        coupon_passwords = req.body.coupon_passwords;
+    }
+
+
+    let event_id = req.body.event_id;
+    OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
+        .then(ifAuthorized => OrganisationController.addWifiCouponsToAnEvent(event_id, coupon_ids, coupon_passwords))
+        .then(data => res.json(data))
+        .catch(err => res.json(err));
+});
+
 module.exports = router;
