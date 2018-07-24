@@ -134,3 +134,60 @@ module.exports.scanQrAndMarkPresent = (session_id, participant_id) => {
         });
     });
 };
+
+// Controller for adding wifi coupon into a user's account if wifi coupon for that event is not present
+// This controller will be added as the last promise to /coordinator/mark-attendance route
+module.exports.checkAndAddWifiCoupon = (user_id, event_id) => {
+    return new Promise((resolve, reject) => {
+        UserTransactions.findWifiCoupons(user_id, (err, output) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                let wifi_coupons = output.wifiCouponHistory;
+                let coupon_exists = false;
+                for (let i=wifi_coupons.length-1; i>=0; i--) {
+                    if (event_id == wifi_coupons[i].event_id) {
+                        coupon_exists = true;
+                        break;
+                    }
+                }
+                setTimeout(() => {
+                    if (coupon_exists)
+                        reject({success: false, message: "Wifi coupon already exists"});
+                    else {
+                        EventTransactions.findEventByEventIdWithoutPopulate(event_id, (err, output) => {
+                            if (err) {
+                                console.log(err);
+                                reject({success: false, message: "An error occurred"});
+                            } else {
+                                let output_coupons = output.wifiCoupons;
+                                let coupon_to_be_allocated = output_coupons[0];
+                                let coupon_id = coupon_to_be_allocated.coupon_id;
+                                let coupon_password = coupon_to_be_allocated.coupon_password;
+
+                                output.wifiCoupons = output.wifiCoupons.slice(1);
+
+                                output.save(err => {
+                                    if (err) {
+                                        console.log(err);
+                                        reject({success: false, message: "An error occurred"});
+                                    } else {
+                                        UserTransactions.addWifiCoupon(user_id, coupon_id, coupon_password, event_id, (err) => {
+                                            if (err) {
+                                                console.log(err);
+                                                reject({success: false, message: "An error occurred"});
+                                            } else {
+                                                resolve({success: true, message: "Wifi coupon added successfully"});
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }, 500);
+            }
+        });
+    });
+};
