@@ -14,7 +14,7 @@ module.exports.findUserByUsernameOrEmail = (input, next) => {
 
 //Function returning a user object corresponding to the provided ObjectID
 module.exports.findUserById = (id, next) => {
-    User.findOne({_id: id}, {_id: 0, password: 0}).exec(next);
+    User.findOne({_id: id}, {password: 0}).exec(next);
 };
 
 // Function for adding a user to the database
@@ -82,4 +82,19 @@ module.exports.verifyUserToken = (secret, req, res, next) => {
     } else {
         return res.json({success: false, message: "No token provided"});
     }
+};
+
+// Function for adding wifi coupon to a user's profile
+module.exports.addWifiCoupon = (user_id, coupon_id, coupon_password, event_id, next) => {
+    let coupon = {
+        coupon_id : coupon_id,
+        coupon_password: coupon_password,
+        event_id: event_id
+    };
+    User.findOneAndUpdate({_id: user_id}, {$push: {wifiCouponHistory: coupon}}).exec(next);
+};
+
+// Function for finding wifi coupon for an event in user's profile
+module.exports.findWifiCoupons = (user_id, next) => {
+    User.findOne({_id: user_id}, 'wifiCouponHistory').exec(next);
 };
