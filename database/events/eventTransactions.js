@@ -12,6 +12,10 @@ module.exports.findEventByEventId = (event_id, next) => {
     Event.findOne({eventId: event_id}, {participants: 0}).populate([{path: 'hostingOrganisation', model: 'Organisation'}, {path: 'eventSessions', model: 'Session'}]).exec(next);
 };
 
+module.exports.findEventByEventIdWithoutPopulate = (event_id, next) => {
+    Event.findOne({eventId: event_id}).exec(next);
+};
+
 module.exports.addAnEvent = (name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, sponsors, next) => {
 
     let newEvent = new Event({
@@ -148,4 +152,14 @@ module.exports.addSponsors = (event_id, sponsors, next) => {
 
 module.exports.findSponsorsOfAnEvent = (event_id, next) => {
     Event.findOne({eventId: event_id}, 'sponsors').exec(next);
+};
+
+// Function for adding wifi coupon to a user's profile
+module.exports.addWifiCoupons = (event_id, coupons, next) => {
+    Event.findOneAndUpdate({eventId: event_id}, {$push: {wifiCoupons: {$each: coupons}}}).exec(next);
+};
+
+// Function for finding wifi coupons in an event
+module.exports.findWifiCouponsInAnEvent = (event_id, next) => {
+    Event.findOneAndUpdate({eventId: event_id}, 'wifiCoupons').exec(next);
 };
