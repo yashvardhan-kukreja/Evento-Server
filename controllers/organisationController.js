@@ -321,3 +321,26 @@ module.exports.addSponsorsToAnEvent = (event_id, names, img_urls) => {
         }
     });
 };
+
+module.exports.addWifiCouponsToAnEvent = (event_id, coupon_ids, coupon_passwords) => {
+    return new Promise((resolve, reject) => {
+        let coupons_arr = [];
+        for (let i=0; i<coupon_ids.length; i++) {
+            coupons_arr.push({
+                coupon_id: coupon_ids[i],
+                coupon_password: coupon_passwords[i]
+            });
+        }
+        setTimeout(() => {
+            EventTransactions.addWifiCoupons(event_id, coupons_arr, (err) => {
+                if (err) {
+                    console.log(err);
+                    reject({success: false, message: "An error occurred"});
+                } else {
+                    resolve({success: true, message: "Wifi coupons added "})
+                }
+            });
+        }, 600);
+
+    });
+};
