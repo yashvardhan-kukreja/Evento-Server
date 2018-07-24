@@ -114,6 +114,16 @@ var eventSchema = new mongoose.Schema({
                 type: String
             }
         }
+    ],
+    wifiCoupons: [
+        {
+            coupon_id: {
+                type: String
+            },
+            coupon_password: {
+                type: String
+            }
+        }
     ]
 });
 
