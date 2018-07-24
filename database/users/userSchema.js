@@ -27,7 +27,20 @@ const userSchema = new Schema({
     contact: {
         type: String,
         required: true
-    }
+    },
+    wifiCouponHistory: [
+        {
+            coupon_id: {
+                type: String
+            },
+            coupon_password: {
+                type: String
+            },
+            event_id: {
+                type: String
+            }
+        }
+    ]
 });
 
 module.exports = mongoose.model('User', userSchema, "users");
