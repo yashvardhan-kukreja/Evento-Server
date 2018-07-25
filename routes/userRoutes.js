@@ -73,8 +73,11 @@ coord_router.post('/mark-attendance', (req, res) => {
 // Route for providing wifi coupon to a participant
 coord_router.post('/allocate-wifi-coupon', (req, res) => {
     let coordinator_email_id = req.decoded.email;
-    let participant_id = req.body.participant_id;
-    let event_id = req.body.event_id;
+    let qr_code = req.body.qr_code;
+
+    let decrypted_form = UserTransations.decryptUserAndEventIdAES(secret, qr_code);
+    let participant_id = decrypted_form.split(" ")[0];
+    let event_id = decrypted_form.split(" ")[1];
 
     UserController.verifyCoordinator(event_id, coordinator_email_id, participant_id)
         .then(ifAuthorized => UserController.checkAndAddWifiCoupon(participant_id, event_id))
