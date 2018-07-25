@@ -16,7 +16,7 @@ module.exports.findEventByEventIdWithoutPopulate = (event_id, next) => {
     Event.findOne({eventId: event_id}).exec(next);
 };
 
-module.exports.addAnEvent = (name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, sponsors, next) => {
+module.exports.addAnEvent = (name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, sponsors, event_logo_url, next) => {
 
     let newEvent = new Event({
         eventName: name,
@@ -30,7 +30,8 @@ module.exports.addAnEvent = (name, coordinator_emails, start_date, end_date, loc
         pointOfContacts: pointOfContacts,
         faqs: faqs,
         sponsors: sponsors,
-        about: about
+        about: about,
+        eventLogoUrl: event_logo_url
     });
     newEvent.save(next);
 

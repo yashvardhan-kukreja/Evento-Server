@@ -45,9 +45,9 @@ module.exports.addOrModifyOrganisationLogoURL = (org_id, logo_url) => {
 
 // Controller for hosting an event
 // Here, session will be hosted via a separate route
-module.exports.hostAnEvent = (name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, sponsors) => {
+module.exports.hostAnEvent = (name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, sponsors, eventLogoUrl) => {
     return new Promise((resolve, reject) => {
-        EventTransactions.addAnEvent(name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, sponsors, (err) => {
+        EventTransactions.addAnEvent(name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, sponsors, eventLogoUrl, (err) => {
             if (err) {
                 console.log(err);
                 reject({success: false, message: "An error occurred"});

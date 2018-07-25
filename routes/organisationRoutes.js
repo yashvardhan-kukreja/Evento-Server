@@ -43,7 +43,8 @@ router.post('/host-event', (req, res) => {
     let about = req.body.about;
     let faqs = req.body.faqs;
     let sponsors = req.body.sponsors;
-    OrganisationController.hostAnEvent(name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, point_of_contacts, faqs, sponsors).then(data => res.json(data)).catch(err => res.json(err));
+    let event_logo_url = req.body.event_logo_url;
+    OrganisationController.hostAnEvent(name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, point_of_contacts, faqs, sponsors, event_logo_url).then(data => res.json(data)).catch(err => res.json(err));
 });
 
 // Route for deleting an event

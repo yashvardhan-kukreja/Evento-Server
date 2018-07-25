@@ -9,6 +9,9 @@ var eventSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    eventLogoUrl: {
+        type: String
+    },
     eventId: {
         type: String
     },
