@@ -65,7 +65,8 @@ module.exports.verifyParticipantOrCoordinatorForAnEvent = (user_id, user_email, 
                                     if (coordinatorEmails.indexOf(user_email) >= 0) {
                                         resolve({success: true, message: "Coordinator registered to the event", is_coordinator: true})
                                     } else {
-                                        reject({success: false, message: "User not registered to the event"});
+                                        let encrypted_id = UserTransactions.encryptUserAndEventIdAES(secret, user_id, event_id);
+                                        resolve({success: true, message: "User registered to the event", is_coordinator: false, encrypted_id: encrypted_id});
                                     }
                                 }
                             }
