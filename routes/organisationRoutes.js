@@ -13,13 +13,13 @@ router.use((req, res, next) => {
 });
 
 // Route for fetching organisation info
-router.get('/fetch/info', (req, res) => {
+router.get('/info', (req, res) => {
     let organisation_id = req.decoded._id;
     OrganisationController.fetchOrganisationDetails(organisation_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
 // Route for adding/modifying the organisation logo
-router.post('/modify-logo', (req, res) => {
+router.put('/logo', (req, res) => {
     let organisation_id = req.decoded._id;
     let org_logo_url = req.body.org_logo_url;
     OrganisationController.addOrModifyOrganisationLogoURL(organisation_id, org_logo_url).then(data => res.json(data)).catch(err => res.json(err));
@@ -43,7 +43,7 @@ router.post('/host-event', (req, res) => {
 });
 
 // Route for deleting an event
-router.post('/delete-event', (req, res) => {
+router.delete('/event', (req, res) => {
     let organisation_id = req.decoded._id;
     let event_id = req.body.event_id;
     OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
@@ -90,7 +90,7 @@ router.post('/event/add-fees', (req, res) => {
 });
 
 // Route for modifying the 'about' of the event
-router.post('/event/modify-about', (req, res) => {
+router.put('/event/about', (req, res) => {
     let organisation_id = req.decoded._id;
     let about = req.body.about;
     let event_id = req.body.event_id;
