@@ -145,7 +145,7 @@ module.exports.fetchTimelineOfAnEvent = (event_id) => {
                 if (!output)
                     reject({success: false, message: "No such event found"});
                 else {
-                    resolve({success: true, message: "Event sessions fetched", timeline: output});
+                    resolve({success: true, message: "Event timeline fetched", timeline: output});
                 }
             }
         });

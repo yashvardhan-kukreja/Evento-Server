@@ -53,7 +53,7 @@ router.delete('/event', (req, res) => {
 });
 
 // Route for adding one or more FAQs in one go
-router.post('/event/add-faqs', (req, res) => {
+router.put('/event/faqs', (req, res) => {
     let organisation_id = req.decoded._id;
     let questions = req.body.questions || req.body.question;
     let answers = req.body.answers || req.body.answer;
@@ -65,7 +65,7 @@ router.post('/event/add-faqs', (req, res) => {
 });
 
 // Route for adding one or more speakers in one go
-router.post('/event/add-speakers', (req, res) => {
+router.put('/event/speakers', (req, res) => {
     let organisation_id = req.decoded._id;
     let names = req.body.names || req.body.name;
     let descriptions = req.body.descriptions || req.body.description;
@@ -78,7 +78,7 @@ router.post('/event/add-speakers', (req, res) => {
 });
 
 // Route for adding fees to the event
-router.post('/event/add-fees', (req, res) => {
+router.put('/event/fees', (req, res) => {
     let organisation_id = req.decoded._id;
     let amount = req.body.amount;
     let description = req.body.description;
@@ -101,7 +101,7 @@ router.put('/event/about', (req, res) => {
 });
 
 // Route for adding Point of Contacts in an event
-router.post('/event/add-pocs', (req, res) => {
+router.put('/event/pocs', (req, res) => {
     let organisation_id = req.decoded._id;
     let names = req.body.names || req.body.name;
     let contacts = req.body.contacts || req.body.contact;
@@ -114,7 +114,7 @@ router.post('/event/add-pocs', (req, res) => {
 });
 
 // Route for adding Coordinators to an event
-router.post('/event/add-coordinators', (req, res) => {
+router.put('/event/coordinators', (req, res) => {
     let organisation_id = req.decoded._id;
     let coordinator_emails = req.body.coordinator_emails || req.body.coordinator_email;
     let event_id = req.body.event_id;
@@ -125,7 +125,7 @@ router.post('/event/add-coordinators', (req, res) => {
 });
 
 // Route for adding a single session to an event
-router.post('/event/add-single-session', (req, res) => {
+router.put('/event/session', (req, res) => {
     let organisation_id = req.decoded._id;
     let event_id = req.body.event_id;
     let names = req.body.name;
@@ -141,7 +141,7 @@ router.post('/event/add-single-session', (req, res) => {
 });
 
 // Route for adding sponsors to an event
-router.post('/event/add-sponsors', (req, res) => {
+router.put('/event/sponsors', (req, res) => {
     let organisation_id = req.decoded._id;
     let event_id = req.body.event_id;
     let names = req.body.names || req.body.name;
@@ -153,7 +153,7 @@ router.post('/event/add-sponsors', (req, res) => {
 });
 
 // Route for adding multiple wifi coupons to an event
-router.post('/event/add-wifi-coupons', (req, res) => {
+router.put('/event/wifi-coupons', (req, res) => {
     let organisation_id = req.decoded._id;
     let coupon_ids = "";
     let coupon_passwords = "";
@@ -175,7 +175,7 @@ router.post('/event/add-wifi-coupons', (req, res) => {
 });
 
 // Route for adding a single event scannable session to an event
-router.post('/event/add-scannable-session', (req, res) => {
+router.put('/event/scannable-session', (req, res) => {
     let organisation_id = req.decoded._id;
     let event_id = req.body.event_id;
     let scannable_name = req.body.scannable_name;
