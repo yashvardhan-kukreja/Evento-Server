@@ -21,6 +21,12 @@ var eventSchema = new mongoose.Schema({
             ref: 'Session'
         }
     ],
+    eventSessionScannables: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Scannable'
+        }
+    ],
     coordinatorEmails: [
         {
             type: String,
@@ -30,12 +36,10 @@ var eventSchema = new mongoose.Schema({
     eventStartDate: {
         type: String,
         required: true
-        // TODO: ask about setting the data type of eventDate as Date or String
     },
     eventEndDate: {
         type: String,
         required: true
-        // TODO: ask about setting the data type of eventDate as Date or String
     },
     eventLocation: {
         type: String,
@@ -46,12 +50,6 @@ var eventSchema = new mongoose.Schema({
         ref: 'Organisation',
         required: true
     },
-    participants: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        }
-    ],
     faqs: [
         {
             question: {
@@ -92,13 +90,7 @@ var eventSchema = new mongoose.Schema({
             },
             description: {
                 type: String
-            },
-            legitParticipants: [
-                {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'User'
-                }
-            ]
+            }
         }
     ],
     about: {

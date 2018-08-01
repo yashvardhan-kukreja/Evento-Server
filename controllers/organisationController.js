@@ -6,7 +6,8 @@ const Promise = require('bluebird');
 const OrganisationTransactions = require('../database/organisations/organisationTransactions');
 const EventTransactions = require('../database/events/eventTransactions');
 const SessionTransactions = require('../database/sessions/sessionTransactions');
-const Middlewares = require('../middlewares');
+const ScannableTransactions = require('../database/scannables/scannableTransactions');
+
 
 // Controller for fetching organisation details
 module.exports.fetchOrganisationDetails = (id) => {
@@ -342,5 +343,25 @@ module.exports.addWifiCouponsToAnEvent = (event_id, coupon_ids, coupon_passwords
             });
         }, 600);
 
+    });
+};
+
+module.exports.addScannable = (name, description, type, event_id) => {
+    return new Promise((resolve, reject) => {
+        ScannableTransactions.addAScannable(name, description, type, event_id, (err, savedOutput) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                let scannable_id = savedOutput._id;
+                EventTransactions.addScannableToAnEvent(event_id, scannable_id, (err) => {
+                    if (err) {
+                        console.log(err);
+                        reject({success: false, message: "An error occurred"});
+                    } else
+                        resolve({success: true, message: "Event Scannable added successfully"});
+                });
+            }
+        });
     });
 };

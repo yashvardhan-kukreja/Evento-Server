@@ -7,6 +7,8 @@ const Promise = require('bluebird');
 const EventTransactions = require('../database/events/eventTransactions');
 const UserTransactions = require('../database/users/userTransactions');
 const SessionTransactions = require('../database/sessions/sessionTransactions');
+const ScannableTransactions = require('../database/scannables/scannableTransactions');
+
 
 // Controller for fetching the event details
 module.exports.fetchEventDetails = (event_id) => {
@@ -49,7 +51,7 @@ module.exports.verifyParticipantOrCoordinatorForAnEvent = (user_id, user_email, 
                     reject({success: false, message: "No participants of the event found"});
                 else {
                     let participantIds = output.participants;
-                    if (participantIds.indexOf(user_id) >= 0) {
+                    if (false) {
                         let encrypted_id = UserTransactions.encryptUserAndEventIdAES(secret, user_id, event_id);
                         resolve({success: true, message: "User registered to the event", is_coordinator: false, encrypted_id: encrypted_id});
                     } else {
@@ -66,7 +68,7 @@ module.exports.verifyParticipantOrCoordinatorForAnEvent = (user_id, user_email, 
                                         resolve({success: true, message: "Coordinator registered to the event", is_coordinator: true})
                                     } else {
                                         let encrypted_id = UserTransactions.encryptUserAndEventIdAES(secret, user_id, event_id);
-                                        resolve({success: true, message: "User registered to the event", is_coordinator: false, encrypted_id: encrypted_id});
+                                        resolve({success: true, message: "QR code generated", is_coordinator: false, encrypted_id: encrypted_id});
                                     }
                                 }
                             }
@@ -118,7 +120,7 @@ module.exports.fetchParticipantsPresentInASession = (session_id) => {
 
 module.exports.fetchSessionsOfAnEvent = (event_id) => {
     return new Promise((resolve, reject) => {
-        EventTransactions.findSessionsOfAnEvent(event_id, (err, output) => {
+        SessionTransactions.findSessionsOfAnEvent(event_id, (err, output) => {
             if (err) {
                 console.log(err);
                 reject({success: false, message: "An error occurred"});
@@ -126,8 +128,24 @@ module.exports.fetchSessionsOfAnEvent = (event_id) => {
                 if (!output)
                     reject({success: false, message: "No such event found"});
                 else {
-                    let sessions = output.eventSessions;
-                    resolve({success: true, message: "Event sessions fetched", sessions: sessions});
+                    resolve({success: true, message: "Event sessions fetched", sessions: output});
+                }
+            }
+        });
+    });
+};
+
+module.exports.fetchTimelineOfAnEvent = (event_id) => {
+    return new Promise((resolve, reject) => {
+        SessionTransactions.findSessionsOfAnEvent(event_id, (err, output) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                if (!output)
+                    reject({success: false, message: "No such event found"});
+                else {
+                    resolve({success: true, message: "Event sessions fetched", timeline: output});
                 }
             }
         });
@@ -143,6 +161,20 @@ module.exports.fetchSponsorsOfAnEvent = (event_id) => {
             } else {
                 let sponsors = output.sponsors;
                 resolve({success: true, message: "Sponsors fetched successfully", sponsors: sponsors});
+            }
+        });
+    });
+};
+
+
+module.exports.fetchScannablesOfAnEvent = (event_id) => {
+    return new Promise((resolve, reject) => {
+        ScannableTransactions.fetchAllScannablesOfAnEvent(event_id, (err, output) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                resolve({success: true, message: "Event Scannables fetched successfully", scannables: output});
             }
         });
     });

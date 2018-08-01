@@ -6,13 +6,8 @@ const User = require('../database/users/userSchema');
 const Organisation = require('../database/organisations/organisationSchema');
 const userTransactions = require('../database/users/userTransactions');
 const organisationTransactions = require('../database/organisations/organisationTransactions');
-try {
-    var config = require('../config');
-} catch (e) {
-    console.log("Using environment variables instead of config variables");
-}
 
-const secret = process.env.SECRET || config.SECRET;
+const secret = process.env.SECRET;
 
 // Function returning a promise for executing the registration of a user
 module.exports.registerUser = (name, username, email, password, contact) => {

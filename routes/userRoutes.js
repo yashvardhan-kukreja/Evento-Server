@@ -7,13 +7,8 @@ const coord_router = require('express').Router();
 const UserController = require('../controllers/userController');
 const EventController = require('../controllers/eventController');
 const UserTransations = require('../database/users/userTransactions');
-try {
-    var config = require('../config');
-} catch (e) {
-    console.log("Using environment variables instead of config variables");
-}
 
-const secret = process.env.SECRET || config.SECRET;
+const secret = process.env.SECRET;
 
 router.use((req, res, next) => {
     UserTransations.verifyUserToken(secret, req, res, next);
@@ -57,7 +52,7 @@ coord_router.use((req, res, next) => {
 // Route for marking a participant as present
 coord_router.post('/mark-attendance', (req, res) => {
     let coordinator_email_id = req.decoded.email;
-    let session_obj_id = req.body.session_obj_id;
+    let scannable_obj_id = req.body.scannable_session_obj_id;
     let qr_code = req.body.qr_code;
 
     let decrypted_form = UserTransations.decryptUserAndEventIdAES(secret, qr_code);
@@ -65,7 +60,7 @@ coord_router.post('/mark-attendance', (req, res) => {
     let event_id = decrypted_form.split(" ")[1];
 
     UserController.verifyCoordinator(event_id, coordinator_email_id)
-        .then(ifAuthorized => UserController.scanQrAndMarkPresent(session_obj_id, participant_id))
+        .then(ifAuthorized => UserController.scanQrAndMarkPresent(scannable_obj_id, participant_id))
         .then(data => res.json(data))
         .catch(err => res.json(err));
 });

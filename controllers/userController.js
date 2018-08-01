@@ -5,7 +5,7 @@
 const Promise = require('bluebird');
 const UserTransactions = require('../database/users/userTransactions');
 const EventTransactions = require('../database/events/eventTransactions');
-const SessionTransactions = require('../database/sessions/sessionTransactions');
+const ScannableTransactions = require('../database/scannables/scannableTransactions');
 
 // Route for fetching a user's details
 module.exports.fetchUserDetails = (id) => {
@@ -106,22 +106,22 @@ module.exports.verifyCoordinator = (event_id, user_email_id) => {
     });
 };
 
-// Controller for marking a participant as present in an event's session
-module.exports.scanQrAndMarkPresent = (session_id, participant_id) => {
+// Controller for marking a participant as present in an event's session scannable
+module.exports.scanQrAndMarkPresent = (scannable_id, participant_id) => {
     return new Promise((resolve, reject) => {
-        SessionTransactions.findSessionBySessionObjId(session_id, (err, outputSession) => {
+        ScannableTransactions.findScannableByScannableId(scannable_id, (err, outputScannable) => {
             if (err) {
                 console.log(err);
                 reject({success: false, message: "An error occurred"});
             } else {
-                if (!outputSession) {
-                    reject({success: false, message: "No session exists"});
+                if (!outputScannable) {
+                    reject({success: false, message: "No such scannable session exists"});
                 } else {
-                    let participants_obj_ids = outputSession.participantsPresent;
+                    let participants_obj_ids = outputScannable.participantsPresent;
                     if (participants_obj_ids.indexOf(participant_id) >= 0) {
-                        reject({success: false, message: "Already marked present"});
+                        reject({success: false, message: "Participant already scanned for this session"});
                     } else {
-                        SessionTransactions.addAParticipantToASession(session_id, participant_id, (err) => {
+                        ScannableTransactions.addAParticipantToAScannable(scannable_id, participant_id, (err) => {
                             if (err) {
                                 console.log(err);
                                 reject({success: false, message: "An error occurred while marking as present"});

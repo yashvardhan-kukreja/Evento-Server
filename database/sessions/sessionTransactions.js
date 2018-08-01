@@ -27,10 +27,6 @@ module.exports.findSessionBySessionObjId = (session_id, next) => {
     Session.findOne({_id: session_id}).exec(next);
 };
 
-module.exports.addAParticipantToASession = (session_id, participant_id, next) => {
-    Session.findOneAndUpdate({_id: session_id}, {$push: {participantsPresent: participant_id}}).exec(next);
-};
-
-module.exports.findParticipantsPresentOfASession = (session_id, next) => {
-    Session.findOne({_id: session_id}, 'participantsPresent').populate({path: 'participantsPresent', model: 'User'}).exec(next);
+module.exports.findSessionsOfAnEvent = (event_id, next) => {
+    Session.find({eventId: event_id}).exec(next);
 };

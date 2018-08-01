@@ -29,6 +29,17 @@ router.post('/session/fetch/participants', (req, res) => {
     EventController.fetchParticipantsPresentInASession(session_obj_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
+// Route for fetching the timetable for an event
+router.post('/fetch/timeline', (req, res) => {
+    let event_id = req.body.event_id;
+    EventController.fetchTimelineOfAnEvent(event_id).then(data => res.json(data)).catch(err => res.json(err));
+});
+
+router.post('/fetch/scannables', (req, res) => {
+    let event_id = req.body.event_id;
+    EventController.fetchScannablesOfAnEvent(event_id).then(data => res.json(data)).catch(err => res.json(err));
+});
+
 // Route for fetching the session in an event
 router.post('/fetch/sessions', (req, res) => {
     let event_id = req.body.event_id;
