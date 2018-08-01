@@ -15,13 +15,13 @@ router.use((req, res, next) => {
 });
 
 // Route for fetching user's info
-router.get('/fetch/personal-info', (req, res) => {
+router.get('/personal-info', (req, res) => {
     let user_id = req.decoded._id;
     UserController.fetchUserDetails(user_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
 // Route for fetching the list of events in which the given user participated
-router.get('/fetch/participated-events', (req, res) => {
+router.get('/participate', (req, res) => {
     let user_id = req.decoded._id;
     UserController.fetchParticipatedEvents(user_id).then(data => res.json(data)).catch(err => res.json(err));
 });
@@ -50,7 +50,7 @@ coord_router.use((req, res, next) => {
 });
 
 // Route for marking a participant as present
-coord_router.post('/mark-attendance', (req, res) => {
+coord_router.put('/mark-attendance', (req, res) => {
     let coordinator_email_id = req.decoded.email;
     let scannable_obj_id = req.body.scannable_session_obj_id;
     let qr_code = req.body.qr_code;
@@ -66,7 +66,7 @@ coord_router.post('/mark-attendance', (req, res) => {
 });
 
 // Route for providing wifi coupon to a participant
-coord_router.post('/allocate-wifi-coupon', (req, res) => {
+coord_router.put('/allocate-wifi-coupon', (req, res) => {
     let coordinator_email_id = req.decoded.email;
     let qr_code = req.body.qr_code;
 
