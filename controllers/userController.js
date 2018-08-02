@@ -99,8 +99,12 @@ module.exports.verifyCoordinator = (event_id, user_email_id) => {
                 console.log(err);
                 reject({success: false, message: "An error occurred"});
             } else {
-                let coordinator_emails = output.coordinatorEmails;
-                (coordinator_emails.indexOf(user_email_id) >= 0) ? resolve({success: true, message: "Is a coordinator"}) : reject({success: false, message: "Not a coordinator"});
+                if (!output) {
+                    reject({success: false, message: "Event corresponding to the QR Code is corrupted"});
+                } else {
+                    let coordinator_emails = output.coordinatorEmails;
+                    (coordinator_emails.indexOf(user_email_id) >= 0) ? resolve({success: true, message: "Is a coordinator"}) : reject({success: false, message: "Not a coordinator"});
+                }
             }
         });
     });
