@@ -6,6 +6,7 @@ const router = require('express').Router();
 const coord_router = require('express').Router();
 const UserController = require('../controllers/userController');
 const EventController = require('../controllers/eventController');
+const OrganisationController = require('../controllers/organisationController');
 const UserTransations = require('../database/users/userTransactions');
 
 const secret = process.env.SECRET;
@@ -78,6 +79,42 @@ coord_router.post('/allocate-wifi-coupon', (req, res) => {
         .then(ifAuthorized => UserController.checkAndAddWifiCoupon(participant_id, event_id))
         .then(data => res.json(data))
         .catch(err => res.json(err));
+});
+
+
+// Route for adding multiple wifi coupons to an event
+coord_router.post('/event/add-wifi-coupons', (req, res) => {
+    //let coordinator_email_id = req.decoded.email;
+    //let organisation_id = req.decoded._id;
+    let coupon_ids = "";
+    let coupon_passwords = "";
+
+    if (typeof (req.body.coupon_ids) === 'string') {
+        coupon_ids = [req.body.coupon_ids];
+        coupon_passwords = [req.body.coupon_passwords];
+    } else {
+        coupon_ids = req.body.coupon_ids;
+        coupon_passwords = req.body.coupon_passwords;
+    }
+
+
+    let event_id = req.body.event_id;
+    OrganisationController.addWifiCouponsToAnEvent(event_id, coupon_ids, coupon_passwords)
+        .then(data => res.json(data))
+        .catch(err => res.json(err));
+});
+
+// Route for adding a single event scannable session to an event
+coord_router.post('/event/add-scannable-session', (req, res) => {
+    let event_id = req.body.event_id;
+    let scannable_name = req.body.scannable_name;
+    let scannable_description = req.body.scannable_description;
+    let scannable_type = req.body.scannable_type;
+
+    OrganisationController.addScannable(scannable_name, scannable_description, scannable_type, event_id)
+        .then(data => res.json(data))
+        .catch(err => res.json(err));
+
 });
 
 module.exports = {
