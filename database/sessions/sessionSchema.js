@@ -29,6 +29,10 @@ let sessionSchema = new mongoose.Schema({
         enum: ["Meal", "Session", "Swag", "Others", "Event Registration"],
         default: "Others"
     },
+    sessionDescription: {
+        type: String,
+        default: ""
+    },
     sessionId: {
         type: Number
     }, // This will be the sum of the ASCII values of all the characters in the name

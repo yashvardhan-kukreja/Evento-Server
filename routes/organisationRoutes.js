@@ -26,7 +26,7 @@ router.put('/logo', (req, res) => {
 });
 
 // Route for hosting an event
-router.post('/host-event', (req, res) => {
+router.post('/event', (req, res) => {
     let organisation_id = req.decoded._id;
     let name = req.body.event_name;
     let coordinator_emails = req.body.coordinator_emails;
@@ -134,8 +134,9 @@ router.put('/event/session', (req, res) => {
     let start_times = req.body.start_time;
     let end_times = req.body.end_time;
     let types = req.body.type;
+    let descs = req.body.desc;
     OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
-        .then(ifAuthorized => OrganisationController.addSessions(event_id, names, locations, start_times, end_times, dates, types))
+        .then(ifAuthorized => OrganisationController.addSessions(event_id, names, locations, start_times, end_times, dates, types, descs))
         .then(data => res.json(data))
         .catch(err => res.json(err));
 });

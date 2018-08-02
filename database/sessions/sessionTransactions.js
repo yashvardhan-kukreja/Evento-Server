@@ -5,7 +5,7 @@
 const Session = require('./sessionSchema');
 const Middlewares = require('../../middlewares');
 
-module.exports.addASingleSession = (event_ob_id, session_name, session_location, session_date, session_start_time, session_end_time, session_type, next) => {
+module.exports.addASingleSession = (event_ob_id, session_name, session_location, session_date, session_start_time, session_end_time, session_type, session_desc, next) => {
     let sessionId = Middlewares.convertAStringToNumber(session_name + session_start_time + session_end_time + session_location + session_date + session_type);
     let session = new Session({
         name: session_name,
@@ -14,7 +14,8 @@ module.exports.addASingleSession = (event_ob_id, session_name, session_location,
         endTime: session_end_time,
         location: session_location,
         sessionId: sessionId,
-        eventId: event_ob_id
+        eventId: event_ob_id,
+        sessionDescription: session_desc
     });
     session.save(next);
 };
