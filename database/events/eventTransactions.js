@@ -9,11 +9,11 @@ module.exports.findEventByEventName = (event_name, next) => {
 };
 
 module.exports.findEventByEventId = (event_id, next) => {
-    Event.findOne({eventId: event_id}, {participants: 0}).populate([{path: 'hostingOrganisation', model: 'Organisation'}, {path: 'eventSessions', model: 'Session'}]).exec(next);
+    Event.findOne({eventId: event_id}, {participants: 0, wifiCoupons: 0}).populate([{path: 'hostingOrganisation', model: 'Organisation'}, {path: 'eventSessions', model: 'Session'}]).exec(next);
 };
 
 module.exports.findEventByEventIdWithoutPopulate = (event_id, next) => {
-    Event.findOne({eventId: event_id}).exec(next);
+    Event.findOne({eventId: event_id}, {wifiCoupons: 0}).exec(next);
 };
 
 module.exports.addAnEvent = (name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, sponsors, event_logo_url, next) => {
