@@ -134,8 +134,9 @@ router.post('/event/add-single-session', (req, res) => {
     let start_times = req.body.start_time;
     let end_times = req.body.end_time;
     let types = req.body.type;
+    let desc =req.body.desc;
     OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
-        .then(ifAuthorized => OrganisationController.addSessions(event_id, names, locations, start_times, end_times, dates, types))
+        .then(ifAuthorized => OrganisationController.addSessions(event_id, names, locations, start_times, end_times, dates, types, desc))
         .then(data => res.json(data))
         .catch(err => res.json(err));
 });
