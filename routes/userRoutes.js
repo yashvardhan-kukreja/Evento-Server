@@ -75,7 +75,7 @@ coord_router.post('/allocate-wifi-coupon', (req, res) => {
     let participant_id = decrypted_form.split(" ")[0];
     let event_id = decrypted_form.split(" ")[1];
 
-    UserController.verifyCoordinator(event_id, coordinator_email_id, participant_id)
+    UserController.verifyCoordinator(event_id, coordinator_email_id)
         .then(ifAuthorized => UserController.checkAndAddWifiCoupon(participant_id, event_id))
         .then(data => res.json(data))
         .catch(err => res.json(err));
