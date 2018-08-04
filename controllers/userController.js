@@ -161,28 +161,32 @@ module.exports.checkAndAddWifiCoupon = (user_id, event_id) => {
                                 console.log(err);
                                 reject({success: false, message: "An error occurred"});
                             } else {
-                                let output_coupons = output.wifiCoupons;
-                                let coupon_to_be_allocated = output_coupons[0];
-                                let coupon_id = coupon_to_be_allocated.coupon_id;
-                                let coupon_password = coupon_to_be_allocated.coupon_password;
+                                if (!output) {
+                                    reject({success: false, message: "No wifi coupons found for this event"});
+                                } else {
+                                    let output_coupons = output.wifiCoupons;
+                                    let coupon_to_be_allocated = output_coupons[0];
+                                    let coupon_id = coupon_to_be_allocated.coupon_id;
+                                    let coupon_password = coupon_to_be_allocated.coupon_password;
 
-                                output.wifiCoupons = output.wifiCoupons.slice(1);
+                                    output.wifiCoupons = output.wifiCoupons.slice(1);
 
-                                output.save(err => {
-                                    if (err) {
-                                        console.log(err);
-                                        reject({success: false, message: "An error occurred"});
-                                    } else {
-                                        UserTransactions.addWifiCoupon(user_id, coupon_id, coupon_password, event_id, (err) => {
-                                            if (err) {
-                                                console.log(err);
-                                                reject({success: false, message: "An error occurred"});
-                                            } else {
-                                                resolve({success: true, message: "Wifi coupon added successfully"});
-                                            }
-                                        });
-                                    }
-                                });
+                                    output.save(err => {
+                                        if (err) {
+                                            console.log(err);
+                                            reject({success: false, message: "An error occurred"});
+                                        } else {
+                                            UserTransactions.addWifiCoupon(user_id, coupon_id, coupon_password, event_id, (err) => {
+                                                if (err) {
+                                                    console.log(err);
+                                                    reject({success: false, message: "An error occurred"});
+                                                } else {
+                                                    resolve({success: true, message: "Wifi coupon added successfully"});
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
                             }
                         });
                     }
