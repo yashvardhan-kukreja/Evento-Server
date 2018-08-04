@@ -160,7 +160,7 @@ module.exports.checkAndAddWifiCoupon = (user_id, event_id) => {
                     if (coupon_exists)
                         reject({success: false, message: "Wifi coupon already exists"});
                     else {
-                        EventTransactions.findEventByEventIdWithoutPopulate(event_id, (err, output) => {
+                        EventTransactions.findWifiCouponsInAnEvent(event_id, (err, output) => {
                             if (err) {
                                 console.log(err);
                                 reject({success: false, message: "An error occurred"});
