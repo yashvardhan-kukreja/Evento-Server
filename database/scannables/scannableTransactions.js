@@ -25,3 +25,7 @@ module.exports.fetchAllScannablesOfAnEvent = (event_id, next) => {
 module.exports.addAParticipantToAScannable = (scannable_id, participant_id, next) => {
     Scannable.findOneAndUpdate({_id: scannable_id}, {$push: {participantsPresent: participant_id}}).exec(next);
 };
+
+module.exports.findAllParticipantsOfAScannable = (scannable_id, next) => {
+    Scannable.findOne({_id: scannable_id}, 'participantsPresent').exec(next);
+};

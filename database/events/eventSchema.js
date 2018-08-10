@@ -15,7 +15,7 @@ var eventSchema = new mongoose.Schema({
     eventId: {
         type: String
     },
-    eventSessions: [
+    /*eventSessions: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Session'
@@ -26,7 +26,7 @@ var eventSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Scannable'
         }
-    ],
+    ],*/
     coordinatorEmails: [
         {
             type: String,

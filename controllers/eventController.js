@@ -102,7 +102,7 @@ module.exports.fetchFaqs = (event_id) => {
 // Controller for fetching the participants of a specific session
 module.exports.fetchParticipantsPresentInASession = (session_id) => {
     return new Promise((resolve, reject) => {
-        SessionTransactions.findParticipantsPresentOfASession(session_id, (err, output) => {
+        ScannableTransactions.findAllParticipantsOfAScannable(session_id, (err, output) => {
             if (err) {
                 console.log(err);
                 reject({success: false, message: "An error occurred"});

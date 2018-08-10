@@ -101,7 +101,7 @@ module.exports.addASingleSpeaker = (event_id, name, description, img_url, next) 
 module.exports.addSpeakers = (event_id, speakers, next) => {
     Event.findOneAndUpdate({eventId: event_id}, {$push: {speakers: {$each: speakers}}}).exec(next);
 };
-
+/*
 module.exports.addASingleSession = (event_ob_id, session_ob_id, next) => {
     Event.findOneAndUpdate({eventId: event_ob_id}, {$push: {eventSessions: session_ob_id}}).exec(next);
 };
@@ -113,7 +113,7 @@ module.exports.addASingleTimetableElement = (event_ob_id, session_ob_id, next) =
 
 module.exports.addSessions = (event_ob_id, session_ob_ids, next) => {
     Event.findOneAndUpdate({eventId: event_ob_id}, {$push: {eventSessions: {$each: session_ob_ids}}}).exec(next);
-};
+};*/
 
 module.exports.addASingleRegFeesTotheEvent = (event_id, amount, description, next) => {
     let fees = {
@@ -165,8 +165,9 @@ module.exports.addWifiCoupons = (event_id, coupons, next) => {
 module.exports.findWifiCouponsInAnEvent = (event_id, next) => {
     Event.findOneAndUpdate({eventId: event_id}, 'wifiCoupons').exec(next);
 };
+/*
 
 // Function for adding a scannable id to an event
 module.exports.addScannableToAnEvent = (event_id, scannable_id, next) => {
     Event.findOneAndUpdate({eventId: event_id}, {$push: {eventSessionScannables: scannable_id}}).exec(next);
-};
+};*/
