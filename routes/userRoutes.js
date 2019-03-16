@@ -8,8 +8,13 @@ const UserController = require('../controllers/userController');
 const EventController = require('../controllers/eventController');
 const OrganisationController = require('../controllers/organisationController');
 const UserTransations = require('../database/users/userTransactions');
+try {
+    var config = require('../config');
+} catch (e) {
+    console.log("Using environment variables instead of config variables");
+}
 
-const secret = process.env.SECRET;
+const secret = process.env.SECRET || config.SECRET;
 
 router.use((req, res, next) => {
     UserTransations.verifyUserToken(secret, req, res, next);

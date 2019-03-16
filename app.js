@@ -15,9 +15,15 @@ const userRouter = require('./routes/userRoutes').user_router;
 const coordinatorRouter = require('./routes/userRoutes').coordinator_router;
 const eventRouter = require('./routes/eventRoutes');
 
+try {
+    var config = require('./config');
+} catch (e) {
+    console.log("Using environment variables instead of config variables");
+}
+
 const app = express();
 const port = process.env.PORT || 8000;
-const db = process.env.DATABASE;
+const db = process.env.DATABASE || config.DATABASE;
 
 // Establishing connection to the database
 mongoose.connect(db, (err) => {

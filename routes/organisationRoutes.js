@@ -6,7 +6,13 @@ const router = require('express').Router();
 const OrganisationController = require('../controllers/organisationController');
 const OrganisationTransactions = require('../database/organisations/organisationTransactions');
 
-const secret = process.env.SECRET;
+try {
+    var config = require('../config');
+} catch (e) {
+    console.log("Using environment variables instead of config variables");
+}
+
+const secret = process.env.SECRET || config.SECRET;
 
 router.use((req, res, next) => {
     OrganisationTransactions.verifyOrganisationToken(secret, req, res, next);
