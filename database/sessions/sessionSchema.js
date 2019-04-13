@@ -26,18 +26,16 @@ let sessionSchema = new mongoose.Schema({
     },
     sessionType: {
         type: String,
-        enum: ["Meal", "Session", "Swag", "Others"],
+        enum: ["Meal", "Session", "Swag", "Others", "Event Registration"],
         default: "Others"
+    },
+    sessionDescription: {
+        type: String,
+        default: ""
     },
     sessionId: {
         type: Number
     }, // This will be the sum of the ASCII values of all the characters in the name
-    participantsPresent: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        }
-    ],
     eventId: {
         type: String
     }

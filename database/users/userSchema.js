@@ -40,7 +40,11 @@ const userSchema = new Schema({
                 type: String
             }
         }
-    ]
+    ],
+    timeOfReg: {
+        type: Number,
+        default: Date.now()
+    }
 });
 
 module.exports = mongoose.model('User', userSchema, "users");

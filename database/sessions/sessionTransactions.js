@@ -5,7 +5,7 @@
 const Session = require('./sessionSchema');
 const Middlewares = require('../../middlewares');
 
-module.exports.addASingleSession = (event_ob_id, session_name, session_location, session_date, session_start_time, session_end_time, session_type, next) => {
+module.exports.addASingleSession = (event_ob_id, session_name, session_location, session_date, session_start_time, session_end_time, session_type, desc, next) => {
     let sessionId = Middlewares.convertAStringToNumber(session_name + session_start_time + session_end_time + session_location + session_date + session_type);
     let session = new Session({
         name: session_name,
@@ -14,7 +14,8 @@ module.exports.addASingleSession = (event_ob_id, session_name, session_location,
         endTime: session_end_time,
         location: session_location,
         sessionId: sessionId,
-        eventId: event_ob_id
+        eventId: event_ob_id,
+        sessionDescription: desc
     });
     session.save(next);
 };
@@ -27,10 +28,6 @@ module.exports.findSessionBySessionObjId = (session_id, next) => {
     Session.findOne({_id: session_id}).exec(next);
 };
 
-module.exports.addAParticipantToASession = (session_id, participant_id, next) => {
-    Session.findOneAndUpdate({_id: session_id}, {$push: {participantsPresent: participant_id}}).exec(next);
-};
-
-module.exports.findParticipantsPresentOfASession = (session_id, next) => {
-    Session.findOne({_id: session_id}, 'participantsPresent').populate({path: 'participantsPresent', model: 'User'}).exec(next);
+module.exports.findSessionsOfAnEvent = (event_id, next) => {
+    Session.find({eventId: event_id}).exec(next);
 };

@@ -4,7 +4,8 @@
 
 const router = require('express').Router();
 const OrganisationController = require('../controllers/organisationController');
-const OrganisationTransations = require('../database/organisations/organisationTransactions');
+const OrganisationTransactions = require('../database/organisations/organisationTransactions');
+
 try {
     var config = require('../config');
 } catch (e) {
@@ -14,7 +15,7 @@ try {
 const secret = process.env.SECRET || config.SECRET;
 
 router.use((req, res, next) => {
-    OrganisationTransations.verifyOrganisationToken(secret, req, res, next);
+    OrganisationTransactions.verifyOrganisationToken(secret, req, res, next);
 });
 
 // Route for fetching organisation info
@@ -139,8 +140,9 @@ router.post('/event/add-single-session', (req, res) => {
     let start_times = req.body.start_time;
     let end_times = req.body.end_time;
     let types = req.body.type;
+    let desc =req.body.desc;
     OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
-        .then(ifAuthorized => OrganisationController.addSessions(event_id, names, locations, start_times, end_times, dates, types))
+        .then(ifAuthorized => OrganisationController.addSessions(event_id, names, locations, start_times, end_times, dates, types, desc))
         .then(data => res.json(data))
         .catch(err => res.json(err));
 });
@@ -175,6 +177,20 @@ router.post('/event/add-wifi-coupons', (req, res) => {
     let event_id = req.body.event_id;
     OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
         .then(ifAuthorized => OrganisationController.addWifiCouponsToAnEvent(event_id, coupon_ids, coupon_passwords))
+        .then(data => res.json(data))
+        .catch(err => res.json(err));
+});
+
+// Route for adding a single event scannable session to an event
+router.post('/event/add-scannable-session', (req, res) => {
+    let organisation_id = req.decoded._id;
+    let event_id = req.body.event_id;
+    let scannable_name = req.body.scannable_name;
+    let scannable_description = req.body.scannable_description;
+    let scannable_type = req.body.scannable_type;
+
+    OrganisationController.authorizeOrganisationForAnEvent(event_id, organisation_id)
+        .then(ifAuthorized => OrganisationController.addScannable(scannable_name, scannable_description, scannable_type, event_id))
         .then(data => res.json(data))
         .catch(err => res.json(err));
 });
