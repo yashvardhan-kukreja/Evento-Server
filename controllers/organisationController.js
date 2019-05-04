@@ -6,7 +6,8 @@ const Promise = require('bluebird');
 const OrganisationTransactions = require('../database/organisations/organisationTransactions');
 const EventTransactions = require('../database/events/eventTransactions');
 const SessionTransactions = require('../database/sessions/sessionTransactions');
-const Middlewares = require('../middlewares');
+const ScannableTransactions = require('../database/scannables/scannableTransactions');
+
 
 // Controller for fetching organisation details
 module.exports.fetchOrganisationDetails = (id) => {
@@ -210,7 +211,7 @@ module.exports.addCoordinators = (event_id, coordinator_emails) => {
 };
 
 // Controller for adding one or more Sessions to an event
-module.exports.addSessions = (event_obj_id, names, locations, start_times, end_times, dates, types) => {
+module.exports.addSessions = (event_obj_id, names, locations, start_times, end_times, dates, types, desc) => {
     return new Promise((resolve, reject) => {
         /*if (typeof(names) === 'string') {
             EventTransactions.addASingleSession(event_id, names, locations, dates, start_times, end_times, (err) => {
@@ -241,7 +242,7 @@ module.exports.addSessions = (event_obj_id, names, locations, start_times, end_t
                 });
             }, 300);
         }*/
-        SessionTransactions.addASingleSession(event_obj_id, names, locations, dates, start_times, end_times, types, (err, savedSession) => {
+        SessionTransactions.addASingleSession(event_obj_id, names, locations, dates, start_times, end_times, types, desc, (err, savedSession) => {
             if (err) {
                 console.log(err);
                 reject({success: false, message: "An error occurred"});
@@ -342,5 +343,25 @@ module.exports.addWifiCouponsToAnEvent = (event_id, coupon_ids, coupon_passwords
             });
         }, 600);
 
+    });
+};
+
+module.exports.addScannable = (name, description, type, event_id) => {
+    return new Promise((resolve, reject) => {
+        ScannableTransactions.addAScannable(name, description, type, event_id, (err, savedOutput) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                let scannable_id = savedOutput._id;
+                EventTransactions.addScannableToAnEvent(event_id, scannable_id, (err) => {
+                    if (err) {
+                        console.log(err);
+                        reject({success: false, message: "An error occurred"});
+                    } else
+                        resolve({success: true, message: "Event Scannable added successfully"});
+                });
+            }
+        });
     });
 };

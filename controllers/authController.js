@@ -6,6 +6,7 @@ const User = require('../database/users/userSchema');
 const Organisation = require('../database/organisations/organisationSchema');
 const userTransactions = require('../database/users/userTransactions');
 const organisationTransactions = require('../database/organisations/organisationTransactions');
+
 try {
     var config = require('../config');
 } catch (e) {

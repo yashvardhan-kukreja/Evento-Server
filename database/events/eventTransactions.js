@@ -9,11 +9,11 @@ module.exports.findEventByEventName = (event_name, next) => {
 };
 
 module.exports.findEventByEventId = (event_id, next) => {
-    Event.findOne({eventId: event_id}, {participants: 0}).populate([{path: 'hostingOrganisation', model: 'Organisation'}, {path: 'eventSessions', model: 'Session'}]).exec(next);
+    Event.findOne({eventId: event_id}, {participants: 0, wifiCoupons: 0}).populate([{path: 'hostingOrganisation', model: 'Organisation'}, {path: 'eventSessions', model: 'Session'}]).exec(next);
 };
 
 module.exports.findEventByEventIdWithoutPopulate = (event_id, next) => {
-    Event.findOne({eventId: event_id}).exec(next);
+    Event.findOne({eventId: event_id}, {wifiCoupons: 0}).exec(next);
 };
 
 module.exports.addAnEvent = (name, coordinator_emails, start_date, end_date, location, organisation_id, reg_fees, about, pointOfContacts, faqs, sponsors, event_logo_url, next) => {
@@ -106,6 +106,11 @@ module.exports.addASingleSession = (event_ob_id, session_ob_id, next) => {
     Event.findOneAndUpdate({eventId: event_ob_id}, {$push: {eventSessions: session_ob_id}}).exec(next);
 };
 
+// TODO: add a single timetable element
+module.exports.addASingleTimetableElement = (event_ob_id, session_ob_id, next) => {
+    Event.findOneAndUpdate({eventId: event_ob_id}, {$push: {eventTimetable: session_ob_id}}).exec(next);
+};
+
 module.exports.addSessions = (event_ob_id, session_ob_ids, next) => {
     Event.findOneAndUpdate({eventId: event_ob_id}, {$push: {eventSessions: {$each: session_ob_ids}}}).exec(next);
 };
@@ -135,10 +140,6 @@ module.exports.addASinglePointOfContact = (event_id, name, email, contact_number
     Event.findOneAndUpdate({eventId: event_id}, {$push: {pointOfContacts: poc}}).exec(next);
 };
 
-module.exports.findSessionsOfAnEvent = (event_id, next) => {
-    Event.findOne({eventId: event_id}, 'eventSessions').populate({path: 'eventSessions', model: 'Session'}).exec(next);
-};
-
 module.exports.addASingleSponsor = (event_id, name, img_url, next) => {
     let sponsor = {
         name: name,
@@ -163,4 +164,9 @@ module.exports.addWifiCoupons = (event_id, coupons, next) => {
 // Function for finding wifi coupons in an event
 module.exports.findWifiCouponsInAnEvent = (event_id, next) => {
     Event.findOneAndUpdate({eventId: event_id}, 'wifiCoupons').exec(next);
+};
+
+// Function for adding a scannable id to an event
+module.exports.addScannableToAnEvent = (event_id, scannable_id, next) => {
+    Event.findOneAndUpdate({eventId: event_id}, {$push: {eventSessionScannables: scannable_id}}).exec(next);
 };
