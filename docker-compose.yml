@@ -1,0 +1,32 @@
+version: "3"
+services:
+  node-1:
+    build: 
+      context: .
+      dockerfile: dockerfile
+    expose: 
+      - 8000
+    ports: 
+      - "5001:8000"
+    restart: always
+    environment: 
+      - DATABASE="mongodb://yash98:yash98@ds219879.mlab.com:19879/evento"
+      - SECRET="yolo1234321"
+    volumes:
+      - /app/node_modules
+      - ./:/app
+  node-2:
+    build: 
+      context: .
+      dockerfile: dockerfile
+    expose: 
+      - 8000
+    ports: 
+      - "5002:8000"
+    restart: always
+    environment: 
+      - DATABASE="mongodb://yash98:yash98@ds219879.mlab.com:19879/evento"
+      - SECRET="yolo1234321"
+    volumes:
+      - /app/node_modules
+      - ./:/app

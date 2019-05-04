@@ -23,8 +23,8 @@ try {
 
 const app = express();
 const port = process.env.PORT || 8000;
-const db = process.env.DATABASE || config.DATABASE;
-
+//const db = process.env.DATABASE || config.DATABASE;
+const db = "mongodb://yash98:yash98@ds219879.mlab.com:19879/evento";
 // Establishing connection to the database
 mongoose.connect(db, (err) => {
     if (err) {

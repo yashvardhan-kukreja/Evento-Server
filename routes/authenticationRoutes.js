@@ -1,6 +1,3 @@
-/**
- * Created by abhi on 21-Mar-18.
- */
 const router = require('express').Router();
 const AuthController = require('../controllers/authController');
 const User = require('../database/users/userSchema');
